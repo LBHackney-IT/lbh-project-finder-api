@@ -4,19 +4,19 @@ setup:
 
 .PHONY: build
 build:
-	docker-compose build base-api
+	docker-compose build project-finder-api
 
 .PHONY: serve
 serve:
-	docker-compose build base-api && docker-compose up base-api
+	docker-compose build project-finder-api && docker-compose up project-finder-api
 
 .PHONY: shell
 shell:
-	docker-compose run base-api bash
+	docker-compose run project-finder-api bash
 
 .PHONY: test
 test:
-	docker-compose up test-database & docker-compose build base-api-test && docker-compose up base-api-test
+	docker-compose up test-database & docker-compose build project-finder-api-test && docker-compose up project-finder-api-test
 
 .PHONY: lint
 lint:
