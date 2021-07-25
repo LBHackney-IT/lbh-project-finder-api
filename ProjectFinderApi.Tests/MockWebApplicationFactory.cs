@@ -1,12 +1,12 @@
 using System.Data.Common;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ProjecFinderApi.Tests
+namespace ProjectFinderApi.Tests
 {
     public class MockWebApplicationFactory<TStartup>
         : WebApplicationFactory<TStartup> where TStartup : class

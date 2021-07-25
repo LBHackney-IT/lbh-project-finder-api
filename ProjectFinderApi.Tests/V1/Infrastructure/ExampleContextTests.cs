@@ -1,8 +1,8 @@
 using System.Linq;
-using ProjecFinderApi.Tests.V1.Helper;
+using ProjectFinderApi.Tests.V1.Helper;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.Infrastructure
+namespace ProjectFinderApi.Tests.V1.Infrastructure
 {
     //TODO: Remove this file if Postgres is not being used
     [TestFixture]

@@ -1,6 +1,6 @@
-using ProjecFinderApi.V1.Boundary.Response;
+using ProjectFinderApi.V1.Boundary.Response;
 
-namespace ProjecFinderApi.V1.UseCase.Interfaces
+namespace ProjectFinderApi.V1.UseCase.Interfaces
 {
     public interface IGetByIdUseCase
     {

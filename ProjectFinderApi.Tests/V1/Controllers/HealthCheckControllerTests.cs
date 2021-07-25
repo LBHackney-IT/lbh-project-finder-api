@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using ProjecFinderApi.V1.Controllers;
-using ProjecFinderApi.V1.UseCase;
+using ProjectFinderApi.V1.Controllers;
+using ProjectFinderApi.V1.UseCase;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.Controllers
+namespace ProjectFinderApi.Tests.V1.Controllers
 {
 
     [TestFixture]

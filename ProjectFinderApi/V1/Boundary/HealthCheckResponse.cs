@@ -1,4 +1,4 @@
-namespace ProjecFinderApi.V1.Boundary
+namespace ProjectFinderApi.V1.Boundary
 {
     public class HealthCheckResponse
     {

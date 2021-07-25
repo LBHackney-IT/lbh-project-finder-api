@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace ProjecFinderApi.V1.Infrastructure
+namespace ProjectFinderApi.V1.Infrastructure
 {
 
     public class DatabaseContext : DbContext

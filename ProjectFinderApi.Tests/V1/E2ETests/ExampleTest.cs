@@ -1,4 +1,4 @@
-namespace ProjecFinderApi.Tests.V1.E2ETests
+namespace ProjectFinderApi.Tests.V1.E2ETests
 {
     //For guidance on writing integration tests see the wiki page https://github.com/LBHackney-IT/lbh-project-finder-api/wiki/Integration-Tests
     public class ExampleTest : IntegrationTests<Startup>

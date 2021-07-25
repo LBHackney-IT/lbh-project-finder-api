@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using ProjecFinderApi.V1.UseCase;
+using ProjectFinderApi.V1.UseCase;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ProjecFinderApi.V1.Controllers
+namespace ProjectFinderApi.V1.Controllers
 {
     [Route("api/v1/healthcheck")]
     [ApiController]

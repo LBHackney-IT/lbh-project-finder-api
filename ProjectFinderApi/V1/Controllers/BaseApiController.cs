@@ -1,9 +1,9 @@
-using ProjecFinderApi.V1.Boundary.Response;
-using ProjecFinderApi.V1.UseCase.Interfaces;
+using ProjectFinderApi.V1.Boundary.Response;
+using ProjectFinderApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ProjecFinderApi.V1.Controllers
+namespace ProjectFinderApi.V1.Controllers
 {
     [ApiController]
     //TODO: Rename to match the APIs endpoint
@@ -11,11 +11,11 @@ namespace ProjecFinderApi.V1.Controllers
     [Produces("application/json")]
     [ApiVersion("1.0")]
     //TODO: rename class to match the API name
-    public class ProjecFinderApiController : BaseController
+    public class ProjectFinderApiController : BaseController
     {
         private readonly IGetAllUseCase _getAllUseCase;
         private readonly IGetByIdUseCase _getByIdUseCase;
-        public ProjecFinderApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
+        public ProjectFinderApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
         {
             _getAllUseCase = getAllUseCase;
             _getByIdUseCase = getByIdUseCase;

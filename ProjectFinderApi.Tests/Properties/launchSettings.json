@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ProjecFinderApi.Tests": {
+    "ProjectFinderApi.Tests": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

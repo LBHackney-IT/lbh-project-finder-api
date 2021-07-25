@@ -1,9 +1,9 @@
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests
+namespace ProjectFinderApi.Tests
 {
     [TestFixture]
     public class DatabaseTests

@@ -1,14 +1,14 @@
 using Amazon.DynamoDBv2.DataModel;
 using AutoFixture;
-using ProjecFinderApi.Tests.V1.Helper;
-using ProjecFinderApi.V1.Domain;
-using ProjecFinderApi.V1.Gateways;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.Tests.V1.Helper;
+using ProjectFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Gateways;
+using ProjectFinderApi.V1.Infrastructure;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.Gateways
+namespace ProjectFinderApi.Tests.V1.Gateways
 {
     //TODO: Remove this file if DynamoDb gateway not being used
     //TODO: Rename Tests to match gateway name

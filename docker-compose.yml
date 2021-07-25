@@ -4,7 +4,7 @@ services:
   project-finder-api:
     image: project-finder-api
     build:
-      context: ProjecFinderApi/
+      context: ProjectFinderApi/
       dockerfile: ./Dockerfile
     ports:
       - 3000:3000
@@ -29,7 +29,7 @@ services:
     image: project-finder-api-test
     build:
       context: .
-      dockerfile: ProjecFinderApi.Tests/Dockerfile
+      dockerfile: ProjectFinderApi.Tests/Dockerfile
     environment:
       - DB_HOST=test-database
       - DB_PORT=5432

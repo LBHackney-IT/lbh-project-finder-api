@@ -2,7 +2,7 @@ using Amazon.DynamoDBv2.DataModel;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ProjecFinderApi.V1.Infrastructure
+namespace ProjectFinderApi.V1.Infrastructure
 {
     //TODO: rename table and add needed fields relating to the table columns.
     // There's an example of this in the wiki https://github.com/LBHackney-IT/lbh-project-finder-api/wiki/DatabaseContext

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using ProjecFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Domain;
 
-namespace ProjecFinderApi.V1.Gateways
+namespace ProjectFinderApi.V1.Gateways
 {
     public interface IExampleGateway
     {

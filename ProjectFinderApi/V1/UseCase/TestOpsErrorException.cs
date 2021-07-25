@@ -1,6 +1,6 @@
 using System;
 
-namespace ProjecFinderApi.V1.UseCase
+namespace ProjectFinderApi.V1.UseCase
 {
     public class TestOpsErrorException : Exception
     {

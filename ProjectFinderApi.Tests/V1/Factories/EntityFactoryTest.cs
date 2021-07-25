@@ -1,11 +1,11 @@
 using AutoFixture;
-using ProjecFinderApi.V1.Domain;
-using ProjecFinderApi.V1.Factories;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Factories;
+using ProjectFinderApi.V1.Infrastructure;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.Factories
+namespace ProjectFinderApi.Tests.V1.Factories
 {
     [TestFixture]
     public class EntityFactoryTest

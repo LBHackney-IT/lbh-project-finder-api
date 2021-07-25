@@ -25,9 +25,9 @@ package:
   artifact: ./bin/release/netcoreapp3.1/your-api-name.zip
 
 functions:
-  ProjecFinderApi:
+  ProjectFinderApi:
     name: ${self:service}-${self:provider.stage}
-    handler: ProjecFinderApi::ProjecFinderApi.LambdaEntryPoint::FunctionHandlerAsync
+    handler: ProjectFinderApi::ProjectFinderApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
 # TODO: Create ssm variables for this API's postgres mirror then rename project-finder-api below to match api name

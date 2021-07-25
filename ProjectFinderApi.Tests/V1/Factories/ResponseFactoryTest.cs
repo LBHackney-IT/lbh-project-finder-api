@@ -1,8 +1,8 @@
-using ProjecFinderApi.V1.Domain;
-using ProjecFinderApi.V1.Factories;
+using ProjectFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Factories;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.Factories
+namespace ProjectFinderApi.Tests.V1.Factories
 {
     public class ResponseFactoryTest
     {

@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
-using ProjecFinderApi.V1.Controllers;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Controllers;
+using ProjectFinderApi.V1.Infrastructure;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.Infrastructure
+namespace ProjectFinderApi.Tests.V1.Infrastructure
 {
     [TestFixture]
     public class CorrelationMiddlewareTest

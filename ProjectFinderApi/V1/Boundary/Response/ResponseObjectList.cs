@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ProjecFinderApi.V1.Boundary.Response
+namespace ProjectFinderApi.V1.Boundary.Response
 {
     //TODO: Rename to represent to object you will be returning eg. ResidentInformationList
     public class ResponseObjectList

@@ -1,15 +1,15 @@
 using System.Linq;
 using AutoFixture;
-using ProjecFinderApi.V1.Boundary.Response;
-using ProjecFinderApi.V1.Domain;
-using ProjecFinderApi.V1.Factories;
-using ProjecFinderApi.V1.Gateways;
-using ProjecFinderApi.V1.UseCase;
+using ProjectFinderApi.V1.Boundary.Response;
+using ProjectFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Factories;
+using ProjectFinderApi.V1.Gateways;
+using ProjectFinderApi.V1.UseCase;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.UseCase
+namespace ProjectFinderApi.Tests.V1.UseCase
 {
     public class GetAllUseCaseTests
     {

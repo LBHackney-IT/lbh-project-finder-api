@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
-namespace ProjecFinderApi.Tests
+namespace ProjectFinderApi.Tests
 {
     public class DynamoDbIntegrationTests<TStartup> where TStartup : class
     {

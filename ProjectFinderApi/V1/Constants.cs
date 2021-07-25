@@ -1,4 +1,4 @@
-namespace ProjecFinderApi.V1.Controllers
+namespace ProjectFinderApi.V1.Controllers
 {
     public static class Constants
     {

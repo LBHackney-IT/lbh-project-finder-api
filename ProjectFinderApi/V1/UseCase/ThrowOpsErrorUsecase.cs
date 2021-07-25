@@ -1,5 +1,5 @@
 
-namespace ProjecFinderApi.V1.UseCase
+namespace ProjectFinderApi.V1.UseCase
 {
     public static class ThrowOpsErrorUsecase
     {

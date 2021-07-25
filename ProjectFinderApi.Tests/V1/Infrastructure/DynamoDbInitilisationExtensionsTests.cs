@@ -1,13 +1,13 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System;
 using System.Linq;
 
-namespace ProjecFinderApi.Tests.V1.Infrastructure
+namespace ProjectFinderApi.Tests.V1.Infrastructure
 {
     [TestFixture]
     public class DynamoDbInitilisationExtensionsTests

@@ -1,6 +1,6 @@
 using System;
 
-namespace ProjecFinderApi.Tests
+namespace ProjectFinderApi.Tests
 {
     public static class ConnectionString
     {

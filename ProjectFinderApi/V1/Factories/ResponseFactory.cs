@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using ProjecFinderApi.V1.Boundary.Response;
-using ProjecFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Boundary.Response;
+using ProjectFinderApi.V1.Domain;
 
-namespace ProjecFinderApi.V1.Factories
+namespace ProjectFinderApi.V1.Factories
 {
     public static class ResponseFactory
     {

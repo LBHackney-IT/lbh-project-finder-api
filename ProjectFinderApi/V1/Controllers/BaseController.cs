@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace ProjecFinderApi.V1.Controllers
+namespace ProjectFinderApi.V1.Controllers
 {
     public class BaseController : Controller
     {

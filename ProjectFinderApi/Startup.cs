@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using ProjecFinderApi.V1.Controllers;
+using ProjectFinderApi.V1.Controllers;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
-using ProjecFinderApi.V1.Gateways;
-using ProjecFinderApi.V1.Infrastructure;
-using ProjecFinderApi.V1.UseCase;
-using ProjecFinderApi.V1.UseCase.Interfaces;
-using ProjecFinderApi.Versioning;
+using ProjectFinderApi.V1.Gateways;
+using ProjectFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.UseCase;
+using ProjectFinderApi.V1.UseCase.Interfaces;
+using ProjectFinderApi.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +23,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace ProjecFinderApi
+namespace ProjectFinderApi
 {
     public class Startup
     {

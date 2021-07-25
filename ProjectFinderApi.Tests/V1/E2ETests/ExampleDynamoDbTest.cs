@@ -1,9 +1,9 @@
 using AutoFixture;
-using ProjecFinderApi;
-using ProjecFinderApi.Tests;
-using ProjecFinderApi.V1.Domain;
-using ProjecFinderApi.V1.Factories;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi;
+using ProjectFinderApi.Tests;
+using ProjectFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Factories;
+using ProjectFinderApi.V1.Infrastructure;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -11,7 +11,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 
-//namespace ProjecFinderApi.Tests.V1.E2ETests
+//namespace ProjectFinderApi.Tests.V1.E2ETests
 //{
 // For guidance on writing integration tests see the wiki page https://github.com/LBHackney-IT/lbh-project-finder-api/wiki/Writing-Integration-Tests
 // Example integration tests using DynamoDb

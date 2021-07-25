@@ -1,7 +1,7 @@
-using ProjecFinderApi.V1.Boundary;
+using ProjectFinderApi.V1.Boundary;
 using Microsoft.Extensions.HealthChecks;
 
-namespace ProjecFinderApi.V1.UseCase
+namespace ProjectFinderApi.V1.UseCase
 {
     public class DbHealthCheckUseCase
     {

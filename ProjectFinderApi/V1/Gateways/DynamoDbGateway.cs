@@ -1,10 +1,10 @@
 using Amazon.DynamoDBv2.DataModel;
-using ProjecFinderApi.V1.Domain;
-using ProjecFinderApi.V1.Factories;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Factories;
+using ProjectFinderApi.V1.Infrastructure;
 using System.Collections.Generic;
 
-namespace ProjecFinderApi.V1.Gateways
+namespace ProjectFinderApi.V1.Gateways
 {
     public class DynamoDbGateway : IExampleGateway
     {

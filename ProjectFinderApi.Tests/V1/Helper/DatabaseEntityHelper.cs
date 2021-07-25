@@ -1,8 +1,8 @@
 using AutoFixture;
-using ProjecFinderApi.V1.Domain;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Infrastructure;
 
-namespace ProjecFinderApi.Tests.V1.Helper
+namespace ProjectFinderApi.Tests.V1.Helper
 {
     public static class DatabaseEntityHelper
     {

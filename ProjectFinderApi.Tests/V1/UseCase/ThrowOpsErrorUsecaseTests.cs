@@ -1,8 +1,8 @@
-using ProjecFinderApi.V1.UseCase;
+using ProjectFinderApi.V1.UseCase;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.UseCase
+namespace ProjectFinderApi.Tests.V1.UseCase
 {
     [TestFixture]
     public class ThrowOpsErrorUsecaseTests

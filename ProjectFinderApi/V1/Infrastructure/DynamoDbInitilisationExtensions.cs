@@ -3,7 +3,7 @@ using Amazon.DynamoDBv2.DataModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace ProjecFinderApi.V1.Infrastructure
+namespace ProjectFinderApi.V1.Infrastructure
 {
     public static class DynamoDbInitilisationExtensions
     {

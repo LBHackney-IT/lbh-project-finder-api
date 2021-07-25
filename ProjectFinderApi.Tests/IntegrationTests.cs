@@ -1,11 +1,11 @@
 using System.Net.Http;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests
+namespace ProjectFinderApi.Tests
 {
     public class IntegrationTests<TStartup> where TStartup : class
     {

@@ -1,7 +1,7 @@
-using ProjecFinderApi.V1.Domain;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Infrastructure;
 
-namespace ProjecFinderApi.V1.Factories
+namespace ProjectFinderApi.V1.Factories
 {
     public static class EntityFactory
     {

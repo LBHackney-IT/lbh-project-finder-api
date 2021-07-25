@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using ProjecFinderApi.V1.Controllers;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Controllers;
+using ProjectFinderApi.V1.Infrastructure;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.Controllers
+namespace ProjectFinderApi.Tests.V1.Controllers
 {
     [TestFixture]
     public class BaseControllerTests

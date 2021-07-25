@@ -1,9 +1,9 @@
-using ProjecFinderApi.V1.Gateways;
-using ProjecFinderApi.V1.UseCase;
+using ProjectFinderApi.V1.Gateways;
+using ProjectFinderApi.V1.UseCase;
 using Moq;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.UseCase
+namespace ProjectFinderApi.Tests.V1.UseCase
 {
     public class GetByIdUseCaseTests
     {

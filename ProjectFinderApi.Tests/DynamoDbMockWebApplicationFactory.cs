@@ -1,14 +1,14 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
-using ProjecFinderApi.V1.Infrastructure;
+using ProjectFinderApi.V1.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 
-namespace ProjecFinderApi.Tests
+namespace ProjectFinderApi.Tests
 {
     public class DynamoDbMockWebApplicationFactory<TStartup>
         : WebApplicationFactory<TStartup> where TStartup : class

@@ -1,9 +1,9 @@
 using System;
-using ProjecFinderApi.V1.Domain;
+using ProjectFinderApi.V1.Domain;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace ProjecFinderApi.Tests.V1.Domain
+namespace ProjectFinderApi.Tests.V1.Domain
 {
     [TestFixture]
     public class EntityTests

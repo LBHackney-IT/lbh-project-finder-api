@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace ProjecFinderApi.Versioning
+namespace ProjectFinderApi.Versioning
 {
     public static class ApiVersionExtensions
     {
