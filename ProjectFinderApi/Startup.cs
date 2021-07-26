@@ -36,8 +36,7 @@ namespace ProjectFinderApi
 
         public IConfiguration Configuration { get; }
         private static List<ApiVersionDescription> _apiVersions { get; set; }
-        //TODO update the below to the name of your API
-        private const string ApiName = "Your API Name";
+        private const string ApiName = "Project Finder API";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -153,8 +152,6 @@ namespace ProjectFinderApi
         {
             services.AddScoped<IExampleGateway, ExampleGateway>();
 
-            //TODO: For DynamoDb, remove the line above and uncomment the line below.
-            //services.AddScoped<IExampleGateway, DynamoDbGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
