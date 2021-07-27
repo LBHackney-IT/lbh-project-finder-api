@@ -1,5 +1,7 @@
 using ProjectFinderApi.V1.Domain;
 using ProjectFinderApi.V1.Infrastructure;
+using DbUser = ProjectFinderApi.V1.Infrastructure.User;
+using User = ProjectFinderApi.V1.Domain.User;
 
 namespace ProjectFinderApi.V1.Factories
 {
@@ -14,6 +16,18 @@ namespace ProjectFinderApi.V1.Factories
             {
                 Id = databaseEntity.Id,
                 CreatedAt = databaseEntity.CreatedAt
+            };
+        }
+
+        public static User ToDomain(this DbUser user)
+        {
+            return new User
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.Name,
+                Role = user.Role,
+
             };
         }
 

@@ -12,5 +12,7 @@ namespace ProjectFinderApi.V1.Infrastructure
         }
 
         public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
 }

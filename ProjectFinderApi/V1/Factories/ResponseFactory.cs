@@ -14,6 +14,17 @@ namespace ProjectFinderApi.V1.Factories
             return new ResponseObject();
         }
 
+        public static UserResponse ToResponse(this User user)
+        {
+            return new UserResponse
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                Role = user.Role,
+            };
+        }
+
         public static List<ResponseObject> ToResponse(this IEnumerable<Entity> domainList)
         {
             return domainList.Select(domain => domain.ToResponse()).ToList();
