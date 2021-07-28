@@ -12,7 +12,9 @@ namespace ProjectFinderApi.V1.Infrastructure
 
         [Column("email")] [Required] public string Email { get; set; }
 
-        [Column("name")] [Required] public string Name { get; set; }
+        [Column("first_name")] [Required] public string FirstName { get; set; }
+
+        [Column("last_name")] [Required] public string LastName { get; set; }
 
         [Column("role")] [Required] public string Role { get; set; }
     }

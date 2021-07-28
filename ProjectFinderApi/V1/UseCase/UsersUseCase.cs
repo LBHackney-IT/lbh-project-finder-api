@@ -18,6 +18,8 @@ namespace ProjectFinderApi.V1.UseCase
 
         public UserResponse ExecutePost(CreateUserRequest createUserRequest)
         {
+            // Check if user exists first, return error if so
+
             return _usersGateway.CreateUser(createUserRequest).ToDomain().ToResponse();
         }
     }

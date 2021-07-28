@@ -20,7 +20,8 @@ namespace ProjectFinderApi.V1.Gateways
             var user = new User
             {
                 Email = createUserRequest.EmailAddress,
-                Name = createUserRequest.Name,
+                FirstName = createUserRequest.FirstName,
+                LastName = createUserRequest.LastName,
                 Role = createUserRequest.Role,
             };
 

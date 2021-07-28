@@ -22,6 +22,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using ProjectFinderApi.V1.Gateways.Interfaces;
+using Amazon.XRay.Recorder.Core;
+using Amazon.XRay.Recorder.Core.Strategies;
 
 namespace ProjectFinderApi
 {
@@ -30,8 +33,9 @@ namespace ProjectFinderApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
+            AWSXRayRecorder.InitializeInstance(configuration);
             AWSSDKHandler.RegisterXRayForAllServices();
+            AWSXRayRecorder.Instance.ContextMissingStrategy = ContextMissingStrategy.LOG_ERROR;
         }
 
         public IConfiguration Configuration { get; }
@@ -122,7 +126,7 @@ namespace ProjectFinderApi
 
         private static void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? "Host=;Database=;";
 
             services.AddDbContext<DatabaseContext>(
                 opt => opt.UseNpgsql(connectionString).AddXRayInterceptor(true));
@@ -150,14 +154,13 @@ namespace ProjectFinderApi
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IExampleGateway, ExampleGateway>();
+            services.AddScoped<IUsersGateway, UsersGateway>();
 
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
-            services.AddScoped<IGetAllUseCase, GetAllUseCase>();
-            services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
+            services.AddScoped<IUsersUseCase, UsersUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

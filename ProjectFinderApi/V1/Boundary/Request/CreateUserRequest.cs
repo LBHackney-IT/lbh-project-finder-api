@@ -8,8 +8,11 @@ namespace ProjectFinderApi.V1.Boundary.Request
         [JsonPropertyName("emailAdress")]
         public string EmailAddress { get; set; }
 
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
+        [JsonPropertyName("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonPropertyName("lastName")]
+        public string LastName { get; set; }
 
         [JsonPropertyName("role")]
         public string Role { get; set; }
