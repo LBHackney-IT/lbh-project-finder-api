@@ -118,8 +118,8 @@ workflows:
   check-and-deploy:
     jobs:
       - check-code-formatting
-      - build-and-test
-      requires:
+      - build-and-test:
+          requires:
             - check-code-formatting
 
 #   check-and-deploy-staging-and-production:
