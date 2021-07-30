@@ -19,6 +19,7 @@
     <PackageReference Include="nunit" Version="3.11.0"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8"/>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7"/>
+    <PackageReference Include="FluentValidation" Version="10.3.0"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProjectFinderApi\ProjectFinderApi.csproj"/>

@@ -39,7 +39,17 @@ namespace ProjectFinderApi.Tests.V1.Controllers
             response?.Value.Should().BeEquivalentTo(user);
         }
 
-        //need validation test for request
+        [Test]
+        public void CreateUserReturns400WhenValidationResultIsNotValid()
+        {
+            var userRequest = TestHelpers.CreateUserRequest(firstName: "");
+
+            var response = _userController.CreateUser(userRequest) as BadRequestObjectResult;
+
+            response?.StatusCode.Should().Be(400);
+            response.Value.Should().Be("First name must be provided");
+        }
+
         [Test]
         public void CreateUserReturns422WhenPostWorkerExceptionThrown()
         {
