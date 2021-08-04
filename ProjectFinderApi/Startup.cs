@@ -39,7 +39,7 @@ namespace ProjectFinderApi
         }
 
         public IConfiguration Configuration { get; }
-        private static List<ApiVersionDescription> _apiVersions { get; set; }
+        private static List<ApiVersionDescription> _apiVersions { get; set; } = null!;
         private const string ApiName = "Project Finder API";
 
         // This method gets called by the runtime. Use this method to add services to the container.

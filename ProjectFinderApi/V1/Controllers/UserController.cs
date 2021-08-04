@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectFinderApi.V1.Exceptions;
 using ProjectFinderApi.V1.Boundary.Request;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ProjectFinderApi.V1.Controllers
 {
@@ -41,7 +40,7 @@ namespace ProjectFinderApi.V1.Controllers
             try
             {
                 var createdUser = _usersUseCase.ExecutePost(request);
-                return CreatedAtAction("User successfully created", createdUser);
+                return CreatedAtAction("CreateUser", createdUser);
             }
             catch (PostUserException e)
             {

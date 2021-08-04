@@ -15,7 +15,7 @@ namespace ProjectFinderApi.Tests.V1.Helpers
             .RuleFor(u => u.EmailAddress, f => email ?? f.Person.Email)
             .RuleFor(u => u.FirstName, f => firstName ?? f.Person.FirstName)
             .RuleFor(u => u.LastName, f => lastName ?? f.Person.LastName)
-            .RuleFor(u => u.Role, f => role ?? f.Random.String2(200));
+            .RuleFor(u => u.Role, f => role ?? f.Random.String2(70));
         }
 
         public static User CreateUser(

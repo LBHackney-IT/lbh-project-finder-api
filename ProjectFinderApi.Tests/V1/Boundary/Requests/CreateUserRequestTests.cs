@@ -11,23 +11,24 @@ namespace ProjectFinderApi.Tests.V1.Boundary.Requests
     [TestFixture]
     public class CreateUserRequestTests
     {
-        private Faker _faker;
 
-        [SetUp]
-        public void SetUp()
-        {
-            _faker = new Faker();
-        }
+        private readonly Faker _faker = new Faker();
 
         [Test]
         public void CreateUserRequestValidationReturnsErrorsWithInvalidProperties()
         {
+            var longEmail = "thisEmailIsLongerWayThan80CharactersAndAlsoValid@HereIAmJustCreatingMoreCharactersToPadOutTheWordLength.com";
             var badCreateUserRequests = new List<(CreateUserRequest, string)>
             {
                 (TestHelpers.CreateUserRequest(email: ""), "Email address must be valid"),
                 (TestHelpers.CreateUserRequest(firstName: ""), "First name must be provided"),
                 (TestHelpers.CreateUserRequest(lastName: ""), "Last name must be provided"),
-                (TestHelpers.CreateUserRequest(role: ""), "Role must be provided")
+                (TestHelpers.CreateUserRequest(role: ""), "Role must be provided"),
+                (TestHelpers.CreateUserRequest(email: longEmail), "Email address must be no longer than 80 characters"),
+                (TestHelpers.CreateUserRequest(firstName: _faker.Random.String2(101)), "First name must be no longer than 100 characters"),
+                (TestHelpers.CreateUserRequest(lastName: _faker.Random.String2(101)), "Last name must be no longer than 100 characters"),
+                (TestHelpers.CreateUserRequest(role: _faker.Random.String2(75)), "Role must be no longer than 70 characters"),
+
             };
 
             var validator = new CreateUserRequestValidator();
