@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectFinderApi.V1.Exceptions;
 using ProjectFinderApi.V1.Boundary.Request;
-using System.Collections.Generic;
 
 namespace ProjectFinderApi.V1.Controllers
 {
