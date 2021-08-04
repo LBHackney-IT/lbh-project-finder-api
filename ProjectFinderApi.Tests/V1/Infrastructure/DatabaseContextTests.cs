@@ -16,7 +16,7 @@ namespace ProjectFinderApi.Tests.V1.Infrastructure
             DatabaseContext.Add(user);
             DatabaseContext.SaveChanges();
 
-            var result = DatabaseContext.Users.ToList().FirstOrDefault();
+            var result = DatabaseContext.Users.FirstOrDefault();
 
             result.Should().BeEquivalentTo(user);
         }
