@@ -11,5 +11,5 @@ COPY . ./
 RUN dotnet build -c Release -o out
 RUN dotnet publish -c Release -o out
 
-EXPOSE ${PORT:-3000}
-CMD ASPNETCORE_URLS=http://+:${PORT:-3000} dotnet ./out/ProjectFinderApi.dll
+EXPOSE ${PORT:-8080}
+CMD ASPNETCORE_URLS=http://+:${PORT:-8080} dotnet ./out/ProjectFinderApi.dll
