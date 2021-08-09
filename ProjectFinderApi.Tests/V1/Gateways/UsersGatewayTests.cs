@@ -1,7 +1,9 @@
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using ProjectFinderApi.Tests.V1.Helpers;
 using ProjectFinderApi.V1.Gateways;
+using ProjectFinderApi.V1.Infrastructure;
 
 namespace ProjectFinderApi.Tests.V1.Gateways
 {
@@ -27,6 +29,35 @@ namespace ProjectFinderApi.Tests.V1.Gateways
             returnedUser.LastName.Should().Be(createdUserRequest.LastName);
             returnedUser.Email.Should().Be(createdUserRequest.EmailAddress);
             returnedUser.Role.Should().Be(createdUserRequest.Role);
+        }
+        [Test]
+        public void GetUsersReturnsListOfUsers()
+        {
+            var firstUser = SaveUserToDatabase(GatewayHelpers.CreateUserDatabaseEntity());
+            var secondUser = SaveUserToDatabase(GatewayHelpers.CreateUserDatabaseEntity(id: 2, email: "test2email@example.com", firstName: "test2-first-name", lastName: "test2-first-name"));
+
+            var response = _classUnderTest.GetUsers().ToList();
+
+            response.Count.Should().Be(2);
+            response.Should().ContainEquivalentOf(firstUser);
+            response.Should().ContainEquivalentOf(secondUser);
+        }
+
+        [Test]
+        public void GetUsersReturnsEmptyListOfUsersIfNoUsersFound()
+        {
+
+            var response = _classUnderTest.GetUsers();
+
+            response.Should().BeEmpty();
+        }
+
+        private User SaveUserToDatabase(User user)
+        {
+            DatabaseContext.Users.Add(user);
+            DatabaseContext.SaveChanges();
+            return user;
+
         }
     }
 }

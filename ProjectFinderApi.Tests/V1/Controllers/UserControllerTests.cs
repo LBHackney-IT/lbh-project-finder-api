@@ -1,10 +1,13 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using ProjectFinderApi.Tests.V1.Helpers;
+using ProjectFinderApi.V1.Boundary.Response;
 using ProjectFinderApi.V1.Controllers;
 using ProjectFinderApi.V1.Exceptions;
+using ProjectFinderApi.V1.Factories;
 using ProjectFinderApi.V1.UseCase.Interfaces;
 
 namespace ProjectFinderApi.Tests.V1.Controllers
@@ -65,6 +68,33 @@ namespace ProjectFinderApi.Tests.V1.Controllers
             response?.StatusCode.Should().Be(422);
             response?.Value.Should().BeEquivalentTo(errorMessage);
         }
+
+        [Test]
+        public void GetUsersReturns200WhenUsersAreFound()
+        {
+            var usersResponse = new List<UserResponse> { TestHelpers.CreateUser().ToDomain().ToResponse() };
+
+            _usersUseCase.Setup(x => x.ExecuteGetAll()).Returns(usersResponse);
+
+            var response = _userController.GetUsers() as ObjectResult;
+
+            response.StatusCode.Should().Be(200);
+            response.Value.Should().BeEquivalentTo(usersResponse);
+        }
+
+        [Test]
+        public void GetUsersReturns404IfNoUsersFound()
+        {
+            var usersResponse = new List<UserResponse>();
+
+            _usersUseCase.Setup(x => x.ExecuteGetAll()).Returns(usersResponse);
+
+            var response = _userController.GetUsers() as NotFoundObjectResult;
+
+            response.StatusCode.Should().Be(404);
+            response.Value.Should().BeEquivalentTo("No users found");
+        }
+
 
 
     }

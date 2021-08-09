@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectFinderApi.V1.Exceptions;
 using ProjectFinderApi.V1.Boundary.Request;
+using System.Collections.Generic;
 
 namespace ProjectFinderApi.V1.Controllers
 {
@@ -45,6 +46,23 @@ namespace ProjectFinderApi.V1.Controllers
             {
                 return UnprocessableEntity(e.Message);
             }
+        }
+
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <response code="404">No users found.</response>
+        [ProducesResponseType(typeof(List<UserResponse>), StatusCodes.Status200OK)]
+        [HttpGet]
+        public IActionResult GetUsers()
+        {
+            var users = _usersUseCase.ExecuteGetAll();
+            if (users.Count == 0)
+            {
+                return NotFound("No users found");
+            }
+
+            return Ok(users);
         }
     }
 }
