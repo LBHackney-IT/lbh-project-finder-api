@@ -155,12 +155,14 @@ namespace ProjectFinderApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<IUsersGateway, UsersGateway>();
+            services.AddScoped<IProjectsGateway, ProjectsGateway>();
 
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
             services.AddScoped<IUsersUseCase, UsersUseCase>();
+            services.AddScoped<IProjectsUseCase, ProjectsUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
