@@ -51,6 +51,7 @@ namespace ProjectFinderApi.V1.Controllers
         /// <summary>
         /// Get all users
         /// </summary>
+        /// <response code="200">Success. return all users</response>
         /// <response code="404">No users found.</response>
         [ProducesResponseType(typeof(List<UserResponse>), StatusCodes.Status200OK)]
         [HttpGet]
