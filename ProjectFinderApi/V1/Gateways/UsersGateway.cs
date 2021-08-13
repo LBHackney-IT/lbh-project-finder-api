@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ProjectFinderApi.V1.Boundary.Request;
 using ProjectFinderApi.V1.Gateways.Interfaces;
 using ProjectFinderApi.V1.Infrastructure;
@@ -28,6 +29,11 @@ namespace ProjectFinderApi.V1.Gateways
             _databaseContext.Users.Add(user);
             _databaseContext.SaveChanges();
             return user;
+        }
+
+        public IEnumerable<User> GetUsers()
+        {
+            return _databaseContext.Users;
         }
     }
 }
