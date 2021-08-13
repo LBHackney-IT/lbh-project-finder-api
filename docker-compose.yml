@@ -7,7 +7,7 @@ services:
       context: ProjectFinderApi/
       dockerfile: ./Dockerfile
     ports:
-      - 8080:8080
+      - 8000:8000
     environment:
       - CONNECTION_STRING=Host=dev-database;Port=5432;Database=testdb;Username=postgres;Password=mypassword
     links:
