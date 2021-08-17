@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ProjectFinderApi.V1.Boundary.Request;
 using ProjectFinderApi.V1.Gateways.Interfaces;
 using ProjectFinderApi.V1.Infrastructure;
@@ -34,6 +35,11 @@ namespace ProjectFinderApi.V1.Gateways
         public IEnumerable<User> GetUsers()
         {
             return _databaseContext.Users;
+        }
+
+        public User GetUserByEmail(GetUserRequest getUserRequest)
+        {
+            return _databaseContext.Users.Where(user => user.Email.ToLower() == getUserRequest.EmailAddress.ToLower()).FirstOrDefault();
         }
     }
 }
