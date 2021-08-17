@@ -16,6 +16,7 @@ namespace ProjectFinderApi.V1.Boundary.Request
         {
             RuleFor(u => u.EmailAddress)
             .NotNull().WithMessage("Email address must be provided")
+            .MaximumLength(80).WithMessage("Email address must be no longer than 80 characters")
             .EmailAddress().WithMessage("Email address must be valid");
         }
     }

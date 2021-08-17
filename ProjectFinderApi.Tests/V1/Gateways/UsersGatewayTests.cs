@@ -57,7 +57,29 @@ namespace ProjectFinderApi.Tests.V1.Gateways
             DatabaseContext.Users.Add(user);
             DatabaseContext.SaveChanges();
             return user;
-
         }
+
+        [Test]
+        public void GetUserByEmailReturnsAUser()
+        {
+            var getUserRequest = TestHelpers.CreateGetUserRequest();
+            var user = SaveUserToDatabase(GatewayHelpers.CreateUserDatabaseEntity(email: getUserRequest.EmailAddress));
+
+            var response = _classUnderTest.GetUserByEmail(getUserRequest.EmailAddress);
+
+            response.Should().NotBeNull();
+            response.Email.Should().Be(getUserRequest.EmailAddress);
+        }
+
+        [Test]
+        public void GetUserByEmailReturnsNullIfNoUserFound()
+        {
+            var getUserRequest = TestHelpers.CreateGetUserRequest();
+
+            var response = _classUnderTest.GetUserByEmail(getUserRequest.EmailAddress);
+
+            response.Should().BeNull();
+        }
+
     }
 }

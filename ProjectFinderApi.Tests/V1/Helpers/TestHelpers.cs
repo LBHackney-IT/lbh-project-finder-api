@@ -33,6 +33,12 @@ namespace ProjectFinderApi.Tests.V1.Helpers
             .RuleFor(u => u.Role, f => role ?? f.Random.String2(70));
         }
 
+        public static GetUserRequest CreateGetUserRequest(string? email = null)
+        {
+            return new Faker<GetUserRequest>()
+            .RuleFor(u => u.EmailAddress, f => email ?? f.Person.Email);
+        }
+
         public static UserResponse CreateUserResponse(
             int? id = null,
             string? firstName = null,
