@@ -35,5 +35,11 @@ namespace ProjectFinderApi.V1.UseCase
             return domainUsers;
 
         }
+
+        public UserResponse? ExecuteGetByEmail(GetUserRequest request)
+        {
+            var user = _usersGateway.GetUserByEmail(request);
+            return user?.ToDomain().ToResponse();
+        }
     }
 }
