@@ -38,31 +38,31 @@ namespace ProjectFinderApi.V1.Boundary.Request
     {
         public CreateProjectRequestValidator()
         {
-            RuleFor(u => u.ProjectName)
+            RuleFor(p => p.ProjectName)
             .NotNull().WithMessage("Project name must be provided")
             .MaximumLength(500).WithMessage("Project name must be no longer than 500 characters")
             .MinimumLength(1).WithMessage("Project name must be provided");
-            RuleFor(u => u.Description)
+            RuleFor(p => p.Description)
             .NotNull().WithMessage("A description must be provided")
             .MaximumLength(1000).WithMessage("A description must be no longer than 1000 characters")
             .MinimumLength(1).WithMessage("A description must be provided");
-            RuleFor(u => u.ProjectContact)
+            RuleFor(p => p.ProjectContact)
             .MaximumLength(100).WithMessage("Project contact must be no longer than 100 characters");
-            RuleFor(u => u.Phase)
+            RuleFor(p => p.Phase)
             .NotNull().WithMessage("A phase must be provided")
             .MaximumLength(70).WithMessage("A phase must be no longer than 70 characters")
             .MinimumLength(1).WithMessage("A phase must be provided");
-            RuleFor(u => u.Size)
+            RuleFor(p => p.Size)
             .NotNull().WithMessage("Size must be provided")
             .MaximumLength(70).WithMessage("Size must be no longer than 70 characters")
             .MinimumLength(1).WithMessage("Size must be provided");
-            RuleFor(u => u.Category)
+            RuleFor(p => p.Category)
             .MaximumLength(70).WithMessage("Project category must be no longer than 70 characters");
-            RuleFor(u => u.Priority)
+            RuleFor(p => p.Priority)
             .MaximumLength(50).WithMessage("Project priority must be no longer than 50 characters");
-            RuleFor(u => u.ProductUsers)
+            RuleFor(p => p.ProductUsers)
             .MaximumLength(500).WithMessage("Product users must be no longer than 500 characters");
-            RuleFor(u => u.Dependencies)
+            RuleFor(p => p.Dependencies)
            .MaximumLength(300).WithMessage("Dependencies must be no longer than 300 characters");
         }
     }
