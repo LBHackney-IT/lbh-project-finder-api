@@ -37,9 +37,9 @@ namespace ProjectFinderApi.V1.Gateways
             return _databaseContext.Users;
         }
 
-        public User GetUserByEmail(GetUserRequest getUserRequest)
+        public User GetUserByEmail(string email)
         {
-            return _databaseContext.Users.Where(user => user.Email.ToLower() == getUserRequest.EmailAddress.ToLower()).FirstOrDefault();
+            return _databaseContext.Users.Where(user => user.Email.ToLower() == email.ToLower()).FirstOrDefault();
         }
     }
 }

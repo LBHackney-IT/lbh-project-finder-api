@@ -12,6 +12,6 @@ namespace ProjectFinderApi.V1.Gateways.Interfaces
 
         IEnumerable<User> GetUsers();
 
-        User GetUserByEmail(GetUserRequest getUserRequest);
+        User GetUserByEmail(string email);
     }
 }
