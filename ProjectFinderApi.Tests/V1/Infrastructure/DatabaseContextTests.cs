@@ -20,5 +20,18 @@ namespace ProjectFinderApi.Tests.V1.Infrastructure
 
             result.Should().BeEquivalentTo(user);
         }
+
+        [Test]
+        public void CanCreateADatabaseRecordForAProject()
+        {
+            var project = TestHelpers.CreateProject();
+
+            DatabaseContext.Add(project);
+            DatabaseContext.SaveChanges();
+
+            var result = DatabaseContext.Projects.FirstOrDefault();
+
+            result.Should().BeEquivalentTo(project);
+        }
     }
 }

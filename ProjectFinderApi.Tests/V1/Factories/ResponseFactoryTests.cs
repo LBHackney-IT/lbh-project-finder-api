@@ -31,5 +31,32 @@ namespace ProjectFinderApi.Tests.V1.Factories
 
         }
 
+        [Test]
+        public void CanMapDomainProjectToResponse()
+        {
+            var domainProject = TestHelpers.CreateProject().ToDomain();
+
+            var expectedResponse = new ProjectResponse()
+            {
+                Id = domainProject.Id,
+                ProjectName = domainProject.ProjectName,
+                Description = domainProject.Description,
+                ProjectContact = domainProject.ProjectContact,
+                Phase = domainProject.Phase,
+                Size = domainProject.Size,
+                Category = domainProject.Category,
+                Priority = domainProject.Priority,
+                ProductUsers = domainProject.ProductUsers,
+                Dependencies = domainProject.Dependencies
+            };
+
+            var response = domainProject.ToResponse();
+
+            response.Should().BeEquivalentTo(expectedResponse);
+
+
+
+        }
+
     }
 }

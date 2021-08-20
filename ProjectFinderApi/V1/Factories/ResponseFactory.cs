@@ -19,5 +19,22 @@ namespace ProjectFinderApi.V1.Factories
             };
         }
 
+        public static ProjectResponse ToResponse(this Domain.Project project)
+        {
+            return new ProjectResponse
+            {
+                Id = project.Id,
+                ProjectName = project.ProjectName,
+                Description = project.Description,
+                ProjectContact = project.ProjectContact,
+                Phase = project.Phase,
+                Size = project.Size,
+                Category = project.Category,
+                Priority = project.Priority,
+                ProductUsers = project.ProductUsers,
+                Dependencies = project.Dependencies
+            };
+        }
+
     }
 }

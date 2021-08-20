@@ -1,7 +1,8 @@
 using AutoFixture;
 using ProjectFinderApi.V1.Domain;
 using ProjectFinderApi.V1.Factories;
-using dbUser = ProjectFinderApi.V1.Infrastructure;
+using dbUser = ProjectFinderApi.V1.Infrastructure.User;
+using dbProject = ProjectFinderApi.V1.Infrastructure.Project;
 using FluentAssertions;
 using NUnit.Framework;
 using Bogus;
@@ -36,6 +37,29 @@ namespace ProjectFinderApi.Tests.V1.Factories
             };
 
             dbUser.ToDomain().Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [Test]
+        public void CanMapProjectFromInfrastructureToDomain()
+        {
+            var dbProject = TestHelpers.CreateProject();
+
+            var expectedResponse = new Project()
+            {
+                Id = dbProject.Id,
+                ProjectName = dbProject.ProjectName,
+                Description = dbProject.Description,
+                ProjectContact = dbProject.ProjectContact,
+                Phase = dbProject.Phase,
+                Size = dbProject.Size,
+                Category = dbProject.Category,
+                Priority = dbProject.Priority,
+                ProductUsers = dbProject.ProductUsers,
+                Dependencies = dbProject.Dependencies
+
+            };
+
+            dbProject.ToDomain().Should().BeEquivalentTo(expectedResponse);
         }
 
     }

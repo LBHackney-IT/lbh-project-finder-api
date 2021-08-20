@@ -47,6 +47,79 @@ namespace ProjectFinderApi.Tests.V1.Helpers
             .RuleFor(u => u.LastName, f => lastName ?? f.Person.LastName)
             .RuleFor(u => u.Role, f => role ?? f.Random.String2(200));
         }
+
+        public static CreateProjectRequest CreateProjectRequest(
+            string? projectName = null,
+            string? description = null,
+            string? projectContact = null,
+            string? phase = null,
+            string? size = null,
+            string? category = null,
+            string? priority = null,
+            string? productUsers = null,
+            string? dependencies = null)
+        {
+            return new Faker<CreateProjectRequest>()
+            .RuleFor(p => p.ProjectName, f => projectName ?? f.Random.String2(500))
+            .RuleFor(p => p.Description, f => description ?? f.Random.String2(1000))
+            .RuleFor(p => p.ProjectContact, f => projectContact)
+            .RuleFor(p => p.Phase, f => phase ?? f.Random.String2(70))
+            .RuleFor(p => p.Size, f => size ?? f.Random.String2(70))
+            .RuleFor(p => p.Category, f => category)
+            .RuleFor(p => p.Priority, f => priority)
+            .RuleFor(p => p.ProductUsers, f => productUsers)
+            .RuleFor(p => p.Dependencies, f => dependencies);
+        }
+
+        public static Project CreateProject(
+            int? id = null,
+            string? projectName = null,
+            string? description = null,
+            string? projectContact = null,
+            string? phase = null,
+            string? size = null,
+            string? category = null,
+            string? priority = null,
+            string? productUsers = null,
+            string? dependencies = null)
+        {
+            return new Faker<Project>()
+            .RuleFor(p => p.Id, f => id ?? f.UniqueIndex)
+            .RuleFor(p => p.ProjectName, f => projectName ?? f.Random.String2(500))
+            .RuleFor(p => p.Description, f => description ?? f.Random.String2(1000))
+            .RuleFor(p => p.ProjectContact, f => projectContact)
+            .RuleFor(p => p.Phase, f => phase ?? f.Random.String2(70))
+            .RuleFor(p => p.Size, f => size ?? f.Random.String2(70))
+            .RuleFor(p => p.Category, f => category)
+            .RuleFor(p => p.Priority, f => priority)
+            .RuleFor(p => p.ProductUsers, f => productUsers)
+            .RuleFor(p => p.Dependencies, f => dependencies);
+        }
+
+        public static ProjectResponse CreateProjectResponse(
+            int? id = null,
+            string? projectName = null,
+            string? description = null,
+            string? projectContact = null,
+            string? phase = null,
+            string? size = null,
+            string? category = null,
+            string? priority = null,
+            string? productUsers = null,
+            string? dependencies = null)
+        {
+            return new Faker<ProjectResponse>()
+            .RuleFor(p => p.Id, f => id ?? f.UniqueIndex)
+            .RuleFor(p => p.ProjectName, f => projectName ?? f.Random.String2(500))
+            .RuleFor(p => p.Description, f => description ?? f.Random.String2(1000))
+            .RuleFor(p => p.ProjectContact, f => projectContact)
+            .RuleFor(p => p.Phase, f => phase ?? f.Random.String2(70))
+            .RuleFor(p => p.Size, f => size ?? f.Random.String2(70))
+            .RuleFor(p => p.Category, f => category)
+            .RuleFor(p => p.Priority, f => priority)
+            .RuleFor(p => p.ProductUsers, f => productUsers)
+            .RuleFor(p => p.Dependencies, f => dependencies);
+        }
     }
 
 }
