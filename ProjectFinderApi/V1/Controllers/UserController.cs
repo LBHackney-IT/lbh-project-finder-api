@@ -69,12 +69,13 @@ namespace ProjectFinderApi.V1.Controllers
         /// <summary>
         /// Get an individual user by their email
         /// </summary>
+        /// <response code="200">Success. return specific user.</response>
         /// <response code="400">Invalid GetUserRequest received.</response>
         /// <response code="404">No user with that email found.</response>
         [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
         [HttpGet]
         [Route("email")]
-        public IActionResult GetUserByEmail([FromBody] GetUserRequest request)
+        public IActionResult GetUserByEmail([FromQuery] GetUserRequest request)
         {
             var validator = new GetUserRequestValidator();
             var validationResults = validator.Validate(request);

@@ -69,7 +69,7 @@ namespace ProjectFinderApi.Tests.V1.UseCase
 
             Action act = () => _usersUseCase.ExecutePost(userRequest);
 
-            act.Should().Throw<PostUserException>().WithMessage($"User with email {userRequest.EmailAddress} already exists on thr system");
+            act.Should().Throw<PostUserException>().WithMessage($"User with email {userRequest.EmailAddress} already exists on the system");
         }
 
         [Test]

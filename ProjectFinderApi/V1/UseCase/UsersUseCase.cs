@@ -25,7 +25,7 @@ namespace ProjectFinderApi.V1.UseCase
             var existingUser = _usersGateway.GetUserByEmail(createUserRequest.EmailAddress);
             if (existingUser != null)
             {
-                throw new PostUserException($"User with email {createUserRequest.EmailAddress} already exists on thr system");
+                throw new PostUserException($"User with email {createUserRequest.EmailAddress} already exists on the system");
             }
 
             return _usersGateway.CreateUser(createUserRequest).ToDomain().ToResponse();
