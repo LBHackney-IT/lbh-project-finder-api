@@ -6,7 +6,7 @@ namespace ProjectFinderApi.V1.Boundary.Request
 {
     public class GetUserRequest
     {
-        [JsonPropertyName("emailAddress")]
+        [JsonPropertyName("email_address")]
         public string EmailAddress { get; set; } = null!;
     }
 
