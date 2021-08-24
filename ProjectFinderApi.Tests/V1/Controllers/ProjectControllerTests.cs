@@ -22,6 +22,7 @@ namespace ProjectFinderApi.Tests.V1.Controllers
 
         private readonly Faker _faker = new Faker();
 
+
         [SetUp]
         public void SetUp()
         {
@@ -104,6 +105,30 @@ namespace ProjectFinderApi.Tests.V1.Controllers
         }
 
         [Test]
+        public void GetProjectReturns200WhenProjectIsFound()
+        {
+            var projectRequest = TestHelpers.GetProjectRequest();
+            var project = TestHelpers.CreateProjectResponse(projectRequest.Id);
+            _projectsUseCase.Setup(x => x.ExecuteGet(projectRequest)).Returns(project);
+
+            var response = _projectController.GetProject(projectRequest) as ObjectResult;
+
+            response?.StatusCode.Should().Be(200);
+            response?.Value.Should().BeEquivalentTo(project);
+        }
+
+        [Test]
+        public void GetProjectReturns400WhenProjectIsNotFound()
+        {
+            var projectRequest = TestHelpers.GetProjectRequest();
+
+            var response = _projectController.GetProject(projectRequest) as NotFoundObjectResult;
+
+            response?.StatusCode.Should().Be(404);
+            response?.Value.Should().Be("No project found with that ID");
+        }
+
+        [Test]
         public void UpdateProjectReturns201WhenProjectIsSuccessfullyUpdated()
         {
             var projectRequest = TestHelpers.UpdateProjectRequest();
@@ -135,6 +160,5 @@ namespace ProjectFinderApi.Tests.V1.Controllers
             response?.StatusCode.Should().Be(422);
             response?.Value.Should().Be($"Project with ID {projectRequest.Id} not found");
         }
-
     }
 }
