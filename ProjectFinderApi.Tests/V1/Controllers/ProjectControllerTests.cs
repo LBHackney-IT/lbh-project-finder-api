@@ -22,8 +22,6 @@ namespace ProjectFinderApi.Tests.V1.Controllers
 
         private readonly Faker _faker = new Faker();
 
-        private readonly Fixture _fixture = new Fixture();
-
         [SetUp]
         public void SetUp()
         {
