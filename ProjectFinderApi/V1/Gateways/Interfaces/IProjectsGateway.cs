@@ -9,6 +9,8 @@ namespace ProjectFinderApi.V1.Gateways.Interfaces
     {
         Project CreateProject(CreateProjectRequest createProjectRequest);
 
+        Project GetProjectById(GetProjectRequest getProjectRequest);
+
         void UpdateProject(UpdateProjectRequest updateProjectRequest);
 
     }

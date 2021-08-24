@@ -41,6 +41,11 @@ namespace ProjectFinderApi.V1.Gateways
             return project;
         }
 
+        public Project GetProjectById(GetProjectRequest getProjectRequest)
+        {
+            return _databaseContext.Projects.Where(project => project.Id == getProjectRequest.Id).FirstOrDefault();
+        }
+
         public void UpdateProject(UpdateProjectRequest updateProjectRequest)
         {
             var project = _databaseContext.Projects.FirstOrDefault(x => x.Id == updateProjectRequest.Id);
@@ -62,6 +67,7 @@ namespace ProjectFinderApi.V1.Gateways
 
             _databaseContext.SaveChanges();
         }
+
     }
 
 }
