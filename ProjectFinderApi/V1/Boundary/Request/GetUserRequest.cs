@@ -1,12 +1,13 @@
 using System;
 using System.Text.Json.Serialization;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ProjectFinderApi.V1.Boundary.Request
 {
     public class GetUserRequest
     {
-        [JsonPropertyName("email_address")]
+        [FromQuery(Name = "email_address")]
         public string EmailAddress { get; set; } = null!;
     }
 
