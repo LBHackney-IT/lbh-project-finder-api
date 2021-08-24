@@ -4,6 +4,7 @@ using ProjectFinderApi.V1.Boundary.Response;
 using ProjectFinderApi.V1.Gateways.Interfaces;
 using ProjectFinderApi.V1.UseCase.Interfaces;
 using ProjectFinderApi.V1.Factories;
+using System.Linq;
 
 namespace ProjectFinderApi.V1.UseCase
 {
@@ -20,6 +21,11 @@ namespace ProjectFinderApi.V1.UseCase
         {
 
             return _projectsGateway.CreateProject(createProjectRequest).ToDomain().ToResponse();
+        }
+
+        public void ExecutePatch(UpdateProjectRequest updateProjectRequest)
+        {
+            _projectsGateway.UpdateProject(updateProjectRequest);
         }
     }
 }

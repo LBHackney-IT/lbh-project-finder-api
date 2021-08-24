@@ -46,5 +46,34 @@ namespace ProjectFinderApi.V1.Controllers
                 return UnprocessableEntity(e.Message);
             }
         }
+
+        /// <summary>
+        /// Update a project
+        /// </summary>
+        /// <param name="request"></param>
+        /// <response code="204">Project successfully updated</response>
+        /// <response code="400">One or more request parameters are invalid or missing</response>
+        /// <response code="422">There was a problem updating the project</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPatch]
+        public IActionResult UpdateProject([FromBody] UpdateProjectRequest request)
+        {
+            var validator = new UpdateProjectRequestValidator();
+            var validationResults = validator.Validate(request);
+            if (!validationResults.IsValid)
+            {
+                return BadRequest(validationResults.ToString());
+            }
+
+            try
+            {
+                _projectsUseCase.ExecutePatch(request);
+                return NoContent();
+            }
+            catch (PatchProjectException e)
+            {
+                return UnprocessableEntity(e.Message);
+            }
+        }
     }
 }

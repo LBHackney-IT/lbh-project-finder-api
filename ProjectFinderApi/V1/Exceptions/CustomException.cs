@@ -13,4 +13,10 @@ namespace ProjectFinderApi.V1.Exceptions
         public PostProjectException(string message) : base(message) { }
 
     }
+
+    public class PatchProjectException : Exception
+    {
+        public PatchProjectException(string message) : base(message) { }
+
+    }
 }

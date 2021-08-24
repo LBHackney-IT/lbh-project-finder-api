@@ -6,5 +6,8 @@ namespace ProjectFinderApi.V1.UseCase.Interfaces
     public interface IProjectsUseCase
     {
         ProjectResponse ExecutePost(CreateProjectRequest request);
+
+        void ExecutePatch(UpdateProjectRequest request);
+
     }
 }
