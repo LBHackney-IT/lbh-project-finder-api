@@ -1,9 +1,12 @@
+using AutoFixture;
 using Bogus;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using ProjectFinderApi.Tests.V1.Helpers;
+using ProjectFinderApi.V1.Boundary.Request;
+using ProjectFinderApi.V1.Boundary.Response;
 using ProjectFinderApi.V1.Controllers;
 using ProjectFinderApi.V1.Exceptions;
 using ProjectFinderApi.V1.UseCase.Interfaces;
@@ -18,6 +21,8 @@ namespace ProjectFinderApi.Tests.V1.Controllers
         private Mock<IProjectsUseCase> _projectsUseCase;
 
         private readonly Faker _faker = new Faker();
+
+        private readonly Fixture _fixture = new Fixture();
 
         [SetUp]
         public void SetUp()
@@ -100,7 +105,38 @@ namespace ProjectFinderApi.Tests.V1.Controllers
             response?.Value.Should().BeEquivalentTo(errorMessage);
         }
 
+        [Test]
+        public void UpdateProjectReturns201WhenProjectIsSuccessfullyUpdated()
+        {
+            var projectRequest = TestHelpers.UpdateProjectRequest();
+            _projectsUseCase.Setup(x => x.ExecutePatch(projectRequest));
 
+            var response = _projectController.UpdateProject(projectRequest) as NoContentResult;
+
+            response?.StatusCode.Should().Be(204);
+        }
+
+        [Test]
+        public void UpdateProjectReturns400WhenValidationResultIsNotValid()
+        {
+            var projectRequest = TestHelpers.UpdateProjectRequest(description: "");
+
+            var response = _projectController.UpdateProject(projectRequest) as BadRequestObjectResult;
+
+            response?.StatusCode.Should().Be(400);
+        }
+
+        [Test]
+        public void UpdateProjectReturns422WhenUpdateProjectExceptiontIsThrown()
+        {
+            var projectRequest = TestHelpers.UpdateProjectRequest();
+            _projectsUseCase.Setup(x => x.ExecutePatch(projectRequest)).Throws(new PatchProjectException($"Project with ID {projectRequest.Id} not found"));
+
+            var response = _projectController.UpdateProject(projectRequest) as ObjectResult;
+
+            response?.StatusCode.Should().Be(422);
+            response?.Value.Should().Be($"Project with ID {projectRequest.Id} not found");
+        }
 
     }
 }
