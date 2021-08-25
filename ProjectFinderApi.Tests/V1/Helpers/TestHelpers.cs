@@ -126,6 +126,13 @@ namespace ProjectFinderApi.Tests.V1.Helpers
             .RuleFor(p => p.ProductUsers, f => productUsers)
             .RuleFor(p => p.Dependencies, f => dependencies);
         }
+
+        public static GetProjectRequest GetProjectRequest(int? id = null)
+        {
+            return new Faker<GetProjectRequest>()
+            .RuleFor(p => p.Id, f => id ?? f.UniqueIndex);
+        }
+
         public static UpdateProjectRequest UpdateProjectRequest(
             int? id = null,
             string? projectName = null,

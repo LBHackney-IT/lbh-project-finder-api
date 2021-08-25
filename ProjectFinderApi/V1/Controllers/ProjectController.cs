@@ -48,6 +48,28 @@ namespace ProjectFinderApi.V1.Controllers
         }
 
         /// <summary>
+        /// Get a project by its ID
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="404">No project found with that ID.</response>
+        [ProducesResponseType(typeof(ProjectResponse), StatusCodes.Status200OK)]
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetProject([FromQuery] GetProjectRequest request)
+        {
+
+            var project = _projectsUseCase.ExecuteGet(request);
+
+            if (project == null)
+            {
+                return NotFound("No project found with that ID");
+            }
+
+            return Ok(project);
+        }
+
+
+        /// <summary>
         /// Update a project
         /// </summary>
         /// <param name="request"></param>

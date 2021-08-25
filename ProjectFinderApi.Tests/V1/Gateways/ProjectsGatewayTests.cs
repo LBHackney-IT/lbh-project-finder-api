@@ -48,6 +48,35 @@ namespace ProjectFinderApi.Tests.V1.Gateways
         }
 
         [Test]
+        public void GetProjectByIdReturnsNullIfNoProjectFound()
+        {
+            var projectRequest = TestHelpers.GetProjectRequest();
+            var response = _classUnderTest.GetProjectById(projectRequest);
+            response.Should().BeNull();
+        }
+
+        [Test]
+        public void GetProjectByIdReturnsProject()
+        {
+            var projectRequest = TestHelpers.GetProjectRequest(id: 1);
+            var project = SaveProjectToDatabase(TestHelpers.CreateProject(id: projectRequest.Id));
+
+            var response = _classUnderTest.GetProjectById(projectRequest);
+
+            response.Should().NotBeNull();
+            response.Id.Should().Be(projectRequest.Id);
+            response.ProjectName.Should().Be(project.ProjectName);
+            response.Description.Should().Be(project.Description);
+            response.ProjectContact.Should().Be(project.ProjectContact);
+            response.Phase.Should().Be(project.Phase);
+            response.Size.Should().Be(project.Size);
+            response.Category.Should().Be(project.Category);
+            response.Priority.Should().Be(project.Priority);
+            response.ProductUsers.Should().Be(project.ProductUsers);
+            response.Dependencies.Should().Be(project.Dependencies);
+        }
+
+        [Test]
         public void UpdateProjectThrowsExceptionIfProjectNotFound()
         {
             var updateProjectRequest = TestHelpers.UpdateProjectRequest();

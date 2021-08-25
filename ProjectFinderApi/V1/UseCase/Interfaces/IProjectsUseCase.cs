@@ -7,7 +7,8 @@ namespace ProjectFinderApi.V1.UseCase.Interfaces
     {
         ProjectResponse ExecutePost(CreateProjectRequest request);
 
-        void ExecutePatch(UpdateProjectRequest request);
+        ProjectResponse? ExecuteGet(GetProjectRequest request);
 
+        void ExecutePatch(UpdateProjectRequest request);
     }
 }
