@@ -1,0 +1,138 @@
+using System.Collections.Generic;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using NUnit.Framework;
+using ProjectFinderApi.Tests.V1.Helpers;
+using ProjectFinderApi.V1.Boundary.Response;
+using ProjectFinderApi.V1.Controllers;
+using ProjectFinderApi.V1.Exceptions;
+using ProjectFinderApi.V1.Factories;
+using ProjectFinderApi.V1.UseCase.Interfaces;
+
+namespace ProjectFinderApi.Tests.V1.Controllers
+{
+    [TestFixture]
+    public class UserControllerTests
+    {
+        private UserController _userController;
+
+        private Mock<IUsersUseCase> _usersUseCase;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _usersUseCase = new Mock<IUsersUseCase>();
+            _userController = new UserController(_usersUseCase.Object);
+        }
+
+        [Test]
+        public void CreateUserReturns201StatusAndUserWhenSuccessful()
+        {
+            //arrange
+            var userRequest = TestHelpers.CreateUserRequest();
+            var user = TestHelpers.CreateUserResponse(firstName: userRequest.FirstName, lastName: userRequest.LastName, email: userRequest.EmailAddress, role: userRequest.Role);
+            _usersUseCase.Setup(x => x.ExecutePost(userRequest)).Returns(user);
+
+            //act
+            var response = _userController.CreateUser(userRequest) as ObjectResult;
+
+            //assert
+            response?.StatusCode.Should().Be(201);
+            response?.Value.Should().BeEquivalentTo(user);
+        }
+
+        [Test]
+        public void CreateUserReturns400WhenValidationResultIsNotValid()
+        {
+            var userRequest = TestHelpers.CreateUserRequest(firstName: "");
+
+            var response = _userController.CreateUser(userRequest) as BadRequestObjectResult;
+
+            response?.StatusCode.Should().Be(400);
+            response.Value.Should().Be("First name must be provided");
+        }
+
+        [Test]
+        public void CreateUserReturns422WhenPostWorkerExceptionThrown()
+        {
+            //arrange
+            const string errorMessage = "Failed to create user";
+            var userRequest = TestHelpers.CreateUserRequest();
+            _usersUseCase.Setup(x => x.ExecutePost(userRequest)).Throws(new PostUserException(errorMessage));
+
+            //act
+            var response = _userController.CreateUser(userRequest) as ObjectResult;
+
+            //assert
+            response?.StatusCode.Should().Be(422);
+            response?.Value.Should().BeEquivalentTo(errorMessage);
+        }
+
+        [Test]
+        public void GetUsersReturns200WhenUsersAreFound()
+        {
+            var usersResponse = new List<UserResponse> { TestHelpers.CreateUser().ToDomain().ToResponse() };
+
+            _usersUseCase.Setup(x => x.ExecuteGetAll()).Returns(usersResponse);
+
+            var response = _userController.GetUsers() as ObjectResult;
+
+            response.StatusCode.Should().Be(200);
+            response.Value.Should().BeEquivalentTo(usersResponse);
+        }
+
+        [Test]
+        public void GetUsersReturns404IfNoUsersFound()
+        {
+            var usersResponse = new List<UserResponse>();
+
+            _usersUseCase.Setup(x => x.ExecuteGetAll()).Returns(usersResponse);
+
+            var response = _userController.GetUsers() as NotFoundObjectResult;
+
+            response.StatusCode.Should().Be(404);
+            response.Value.Should().BeEquivalentTo("No users found");
+        }
+
+        [Test]
+        public void GetUserByEmailReturns200WhenAUserIsFound()
+        {
+            var getUserRequest = TestHelpers.CreateGetUserRequest();
+            var userResponse = TestHelpers.CreateUserResponse();
+
+            _usersUseCase.Setup(x => x.ExecuteGetByEmail(getUserRequest)).Returns(userResponse);
+
+            var response = _userController.GetUserByEmail(getUserRequest) as ObjectResult;
+
+            response.StatusCode.Should().Be(200);
+            response.Value.Should().BeEquivalentTo(userResponse);
+        }
+
+        [Test]
+        public void GetUserByEmailReturns400WhenValidationResultIsNotValid()
+        {
+            var getUserRequest = TestHelpers.CreateGetUserRequest(email: "");
+
+            var response = _userController.GetUserByEmail(getUserRequest) as BadRequestObjectResult;
+
+            response.StatusCode.Should().Be(400);
+            response.Value.Should().BeEquivalentTo("Email address must be valid");
+        }
+
+        [Test]
+        public void GetUserByEmailReturns404IfNoUserIsFound()
+        {
+            var getUserRequest = TestHelpers.CreateGetUserRequest();
+
+            var response = _userController.GetUserByEmail(getUserRequest) as NotFoundObjectResult;
+
+            response.StatusCode.Should().Be(404);
+            response.Value.Should().BeEquivalentTo("No user with that email found");
+        }
+
+
+
+
+    }
+}

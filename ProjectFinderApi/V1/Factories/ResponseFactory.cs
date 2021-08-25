@@ -7,16 +7,34 @@ namespace ProjectFinderApi.V1.Factories
 {
     public static class ResponseFactory
     {
-        //TODO: Map the fields in the domain object(s) to fields in the response object(s).
-        // More information on this can be found here https://github.com/LBHackney-IT/lbh-project-finder-api/wiki/Factory-object-mappings
-        public static ResponseObject ToResponse(this Entity domain)
+        public static UserResponse ToResponse(this Domain.User user)
         {
-            return new ResponseObject();
+            return new UserResponse
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role,
+            };
         }
 
-        public static List<ResponseObject> ToResponse(this IEnumerable<Entity> domainList)
+        public static ProjectResponse ToResponse(this Domain.Project project)
         {
-            return domainList.Select(domain => domain.ToResponse()).ToList();
+            return new ProjectResponse
+            {
+                Id = project.Id,
+                ProjectName = project.ProjectName,
+                Description = project.Description,
+                ProjectContact = project.ProjectContact,
+                Phase = project.Phase,
+                Size = project.Size,
+                Category = project.Category,
+                Priority = project.Priority,
+                ProductUsers = project.ProductUsers,
+                Dependencies = project.Dependencies
+            };
         }
+
     }
 }

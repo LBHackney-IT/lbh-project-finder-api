@@ -7,7 +7,7 @@ services:
       context: ProjectFinderApi/
       dockerfile: ./Dockerfile
     ports:
-      - 3000:3000
+      - 8000:8000
     environment:
       - CONNECTION_STRING=Host=dev-database;Port=5432;Database=testdb;Username=postgres;Password=mypassword
     links:
@@ -16,8 +16,8 @@ services:
     env_file:
       - database.env
     image: postgres:12
-    volumes:
-      - ./database:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
 
   project-finder-api-test:
     image: project-finder-api-test
