@@ -160,5 +160,26 @@ namespace ProjectFinderApi.Tests.V1.Controllers
             response?.StatusCode.Should().Be(422);
             response?.Value.Should().Be($"Project with ID {projectRequest.Id} not found");
         }
+
+        [Test]
+        public void DeleteProjectReturns200WhenProjectIsSucessfullyDeleted()
+        {
+            var response = _projectController.DeleteProject(1) as ObjectResult;
+
+            response?.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void DeleteProjectReturns400WhenDeleteProjectExceptionIsThrown()
+        {
+            var nonExisitentProjectId = 1;
+            _projectsUseCase.Setup(x => x.ExecuteDelete(nonExisitentProjectId)).Throws(new DeleteProjectException($"Project with ID {nonExisitentProjectId} not found"));
+
+            var response = _projectController.DeleteProject(nonExisitentProjectId) as BadRequestObjectResult;
+
+            response?.StatusCode.Should().Be(400);
+            response?.Value.Should().Be($"Project with ID {nonExisitentProjectId} not found");
+        }
+
     }
 }
