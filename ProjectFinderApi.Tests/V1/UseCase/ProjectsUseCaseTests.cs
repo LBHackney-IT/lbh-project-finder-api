@@ -120,6 +120,21 @@ namespace ProjectFinderApi.Tests.V1.UseCase
             _mockProjectsGateway.Verify(x => x.UpdateProject(projectRequest));
             _mockProjectsGateway.Verify(x => x.UpdateProject(It.Is<UpdateProjectRequest>(u => u == projectRequest)), Times.Once());
         }
+
+        [Test]
+        public void ExecuteDeleteCallsProjectsGateway()
+        {
+            var projectId = 1;
+            _mockProjectsGateway.Setup(x => x.DeleteProject(projectId));
+
+            _projectsUseCase.ExecuteDelete(projectId);
+
+            _mockProjectsGateway.Verify(x => x.DeleteProject(projectId));
+
+            _mockProjectsGateway.Verify(x => x.DeleteProject(It.Is<int>(u => u == projectId)), Times.Once());
+
+        }
+
     }
 
 }

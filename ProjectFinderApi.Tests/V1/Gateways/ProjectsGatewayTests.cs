@@ -107,5 +107,18 @@ namespace ProjectFinderApi.Tests.V1.Gateways
             updatedProject.ProductUsers.Should().Be(updateProjectRequest.ProductUsers);
             updatedProject.Dependencies.Should().Be(updateProjectRequest.Dependencies);
         }
+
+        [Test]
+        public void DeleteProjectDeletesAProject()
+        {
+            var project = SaveProjectToDatabase(TestHelpers.CreateProject(id: 20));
+
+            _classUnderTest.DeleteProject(20);
+
+            var deletedProject = DatabaseContext.Projects.FirstOrDefault(p => p.Id == project.Id);
+
+            deletedProject.Should().BeNull();
+        }
+
     }
 }

@@ -33,5 +33,11 @@ namespace ProjectFinderApi.V1.UseCase
         {
             _projectsGateway.UpdateProject(updateProjectRequest);
         }
+
+        public void ExecuteDelete(int id)
+        {
+            _projectsGateway.DeleteProject(id);
+        }
+
     }
 }
