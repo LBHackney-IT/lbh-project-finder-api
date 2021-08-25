@@ -9,5 +9,7 @@ namespace ProjectFinderApi.V1.UseCase.Interfaces
         UserResponse ExecutePost(CreateUserRequest request);
 
         List<UserResponse> ExecuteGetAll();
+
+        UserResponse? ExecuteGetByEmail(GetUserRequest request);
     }
 }

@@ -95,6 +95,43 @@ namespace ProjectFinderApi.Tests.V1.Controllers
             response.Value.Should().BeEquivalentTo("No users found");
         }
 
+        [Test]
+        public void GetUserByEmailReturns200WhenAUserIsFound()
+        {
+            var getUserRequest = TestHelpers.CreateGetUserRequest();
+            var userResponse = TestHelpers.CreateUserResponse();
+
+            _usersUseCase.Setup(x => x.ExecuteGetByEmail(getUserRequest)).Returns(userResponse);
+
+            var response = _userController.GetUserByEmail(getUserRequest) as ObjectResult;
+
+            response.StatusCode.Should().Be(200);
+            response.Value.Should().BeEquivalentTo(userResponse);
+        }
+
+        [Test]
+        public void GetUserByEmailReturns400WhenValidationResultIsNotValid()
+        {
+            var getUserRequest = TestHelpers.CreateGetUserRequest(email: "");
+
+            var response = _userController.GetUserByEmail(getUserRequest) as BadRequestObjectResult;
+
+            response.StatusCode.Should().Be(400);
+            response.Value.Should().BeEquivalentTo("Email address must be valid");
+        }
+
+        [Test]
+        public void GetUserByEmailReturns404IfNoUserIsFound()
+        {
+            var getUserRequest = TestHelpers.CreateGetUserRequest();
+
+            var response = _userController.GetUserByEmail(getUserRequest) as NotFoundObjectResult;
+
+            response.StatusCode.Should().Be(404);
+            response.Value.Should().BeEquivalentTo("No user with that email found");
+        }
+
+
 
 
     }
