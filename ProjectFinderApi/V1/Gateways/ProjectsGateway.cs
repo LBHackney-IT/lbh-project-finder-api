@@ -82,6 +82,20 @@ namespace ProjectFinderApi.V1.Gateways
             _databaseContext.SaveChanges();
         }
 
+        public List<ProjectResponse> GetProjectsByQuery(int cursor, int limit, string? projectName = null, string? size = null, string? phase = null)
+        {
+            var projects = _databaseContext.Projects
+            .Where(p => string.IsNullOrEmpty(projectName) || p.ProjectName.ToLower().Contains(projectName.ToLower()))
+            .Where(p => string.IsNullOrEmpty(size) || p.Size.ToLower().Contains(size.ToLower()))
+            .Where(p => string.IsNullOrEmpty(phase) || p.Phase.ToLower().Contains(phase.ToLower()))
+            .Where(p => p.Id > cursor)
+            .OrderBy(p => p.Id)
+            .Take(limit);
+
+            var response = projects.Select(x => x.ToDomain().ToResponse()).ToList();
+
+            return response;
+        }
 
     }
 

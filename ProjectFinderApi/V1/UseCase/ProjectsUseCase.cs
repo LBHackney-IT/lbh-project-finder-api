@@ -39,5 +39,22 @@ namespace ProjectFinderApi.V1.UseCase
             _projectsGateway.DeleteProject(id);
         }
 
+        public ProjectListResponse ExecuteGetAllByQuery(ProjectQueryParams pqp, int cursor, int limit)
+        {
+            limit = limit < 10 ? 10 : limit;
+            limit = limit > 100 ? 100 : limit;
+
+            var projects = _projectsGateway.GetProjectsByQuery(cursor, limit, pqp.ProjectName, pqp.Size, pqp.Phase);
+
+            var nextCursor = projects.Count == limit ? projects.Max(p => p.Id).ToString() : null;
+
+            return new ProjectListResponse
+            {
+                Projects = projects,
+                NextCursor = nextCursor
+            };
+        }
+
+
     }
 }

@@ -15,5 +15,7 @@ namespace ProjectFinderApi.V1.Gateways.Interfaces
 
         void DeleteProject(int id);
 
+        List<ProjectResponse> GetProjectsByQuery(int cursor, int limit, string? projectName = null, string? size = null, string? phase = null);
+
     }
 }
