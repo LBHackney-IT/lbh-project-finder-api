@@ -13,5 +13,7 @@ namespace ProjectFinderApi.V1.Gateways.Interfaces
 
         void UpdateProject(UpdateProjectRequest updateProjectRequest);
 
+        void DeleteProject(int id);
+
     }
 }

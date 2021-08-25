@@ -68,6 +68,21 @@ namespace ProjectFinderApi.V1.Gateways
             _databaseContext.SaveChanges();
         }
 
+
+        public void DeleteProject(int id)
+        {
+            var project = _databaseContext.Projects.FirstOrDefault(x => x.Id == id);
+
+            if (project == null)
+            {
+                throw new DeleteProjectException($"Project with ID {id} not found");
+            }
+
+            _databaseContext.Remove(project);
+            _databaseContext.SaveChanges();
+        }
+
+
     }
 
 }

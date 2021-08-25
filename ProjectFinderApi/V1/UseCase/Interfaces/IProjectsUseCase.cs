@@ -10,5 +10,7 @@ namespace ProjectFinderApi.V1.UseCase.Interfaces
         ProjectResponse? ExecuteGet(GetProjectRequest request);
 
         void ExecutePatch(UpdateProjectRequest request);
+
+        void ExecuteDelete(int id);
     }
 }

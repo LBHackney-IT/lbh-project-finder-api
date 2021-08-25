@@ -97,5 +97,27 @@ namespace ProjectFinderApi.V1.Controllers
                 return UnprocessableEntity(e.Message);
             }
         }
+
+        /// <summary>
+        /// Delete a project
+        /// </summary>
+        /// <response code="200">Project successfully deleted</response>
+        /// <response code="400">Invalid request received</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteProject(int id)
+        {
+            try
+            {
+                _projectsUseCase.ExecuteDelete(id);
+                return Ok();
+            }
+            catch (DeleteProjectException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }
