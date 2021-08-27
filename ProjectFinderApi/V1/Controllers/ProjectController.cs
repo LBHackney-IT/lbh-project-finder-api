@@ -48,6 +48,28 @@ namespace ProjectFinderApi.V1.Controllers
         }
 
         /// <summary>
+        /// Get a project by its ID
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="404">No project found with that ID.</response>
+        [ProducesResponseType(typeof(ProjectResponse), StatusCodes.Status200OK)]
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetProject([FromQuery] GetProjectRequest request)
+        {
+
+            var project = _projectsUseCase.ExecuteGet(request);
+
+            if (project == null)
+            {
+                return NotFound("No project found with that ID");
+            }
+
+            return Ok(project);
+        }
+
+
+        /// <summary>
         /// Update a project
         /// </summary>
         /// <param name="request"></param>
@@ -75,5 +97,48 @@ namespace ProjectFinderApi.V1.Controllers
                 return UnprocessableEntity(e.Message);
             }
         }
+
+        /// <summary>
+        /// Delete a project
+        /// </summary>
+        /// <response code="200">Project successfully deleted</response>
+        /// <response code="400">Invalid request received</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteProject(int id)
+        {
+            try
+            {
+                _projectsUseCase.ExecuteDelete(id);
+                return Ok();
+            }
+            catch (DeleteProjectException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get projects by query parameters
+        /// </summary>
+        /// <response code="200">Success</response>
+        /// <response code="404">No projects found.</response>
+        [ProducesResponseType(typeof(ProjectListResponse), StatusCodes.Status200OK)]
+        [HttpGet]
+        public IActionResult GetProjectsBySearchQuery([FromQuery] ProjectQueryParams pqp, int cursor = 0, int limit = 20)
+        {
+            try
+            {
+                var projects = _projectsUseCase.ExecuteGetAllByQuery(pqp, cursor, limit);
+                return Ok(projects);
+            }
+            catch (GetProjectsException e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+
     }
 }

@@ -7,7 +7,12 @@ namespace ProjectFinderApi.V1.UseCase.Interfaces
     {
         ProjectResponse ExecutePost(CreateProjectRequest request);
 
+        ProjectResponse? ExecuteGet(GetProjectRequest request);
+
         void ExecutePatch(UpdateProjectRequest request);
 
+        void ExecuteDelete(int id);
+
+        ProjectListResponse ExecuteGetAllByQuery(ProjectQueryParams pqp, int cursor, int limit);
     }
 }

@@ -22,6 +22,9 @@ namespace ProjectFinderApi.Tests.V1.Controllers
 
         private readonly Faker _faker = new Faker();
 
+        private readonly Fixture _fixture = new Fixture();
+
+
         [SetUp]
         public void SetUp()
         {
@@ -104,6 +107,30 @@ namespace ProjectFinderApi.Tests.V1.Controllers
         }
 
         [Test]
+        public void GetProjectReturns200WhenProjectIsFound()
+        {
+            var projectRequest = TestHelpers.GetProjectRequest();
+            var project = TestHelpers.CreateProjectResponse(projectRequest.Id);
+            _projectsUseCase.Setup(x => x.ExecuteGet(projectRequest)).Returns(project);
+
+            var response = _projectController.GetProject(projectRequest) as ObjectResult;
+
+            response?.StatusCode.Should().Be(200);
+            response?.Value.Should().BeEquivalentTo(project);
+        }
+
+        [Test]
+        public void GetProjectReturns400WhenProjectIsNotFound()
+        {
+            var projectRequest = TestHelpers.GetProjectRequest();
+
+            var response = _projectController.GetProject(projectRequest) as NotFoundObjectResult;
+
+            response?.StatusCode.Should().Be(404);
+            response?.Value.Should().Be("No project found with that ID");
+        }
+
+        [Test]
         public void UpdateProjectReturns201WhenProjectIsSuccessfullyUpdated()
         {
             var projectRequest = TestHelpers.UpdateProjectRequest();
@@ -136,5 +163,50 @@ namespace ProjectFinderApi.Tests.V1.Controllers
             response?.Value.Should().Be($"Project with ID {projectRequest.Id} not found");
         }
 
+        [Test]
+        public void DeleteProjectReturns200WhenProjectIsSucessfullyDeleted()
+        {
+            var response = _projectController.DeleteProject(1) as ObjectResult;
+
+            response?.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void DeleteProjectReturns400WhenDeleteProjectExceptionIsThrown()
+        {
+            var nonExisitentProjectId = 1;
+            _projectsUseCase.Setup(x => x.ExecuteDelete(nonExisitentProjectId)).Throws(new DeleteProjectException($"Project with ID {nonExisitentProjectId} not found"));
+
+            var response = _projectController.DeleteProject(nonExisitentProjectId) as BadRequestObjectResult;
+
+            response?.StatusCode.Should().Be(400);
+            response?.Value.Should().Be($"Project with ID {nonExisitentProjectId} not found");
+        }
+
+        [Test]
+        public void GetProjectBySearchQueryReturns200WhenSuccessful()
+        {
+            var projectResponseList = _fixture.Create<ProjectListResponse>();
+            var projectSearchQuery = new ProjectQueryParams();
+            _projectsUseCase.Setup(x => x.ExecuteGetAllByQuery(projectSearchQuery, 0, 20)).Returns(projectResponseList);
+
+            var response = _projectController.GetProjectsBySearchQuery(projectSearchQuery) as OkObjectResult;
+
+            response?.StatusCode.Should().Be(200);
+            response?.Value.Should().Be(projectResponseList);
+        }
+
+        [Test]
+        public void GetProjectBySearchQueryReturns404WhenNoProjectsFound()
+        {
+
+            var projectSearchQuery = new ProjectQueryParams();
+            _projectsUseCase.Setup(x => x.ExecuteGetAllByQuery(projectSearchQuery, 0, 20)).Throws(new GetProjectsException("No projects found"));
+
+            var response = _projectController.GetProjectsBySearchQuery(projectSearchQuery) as NotFoundObjectResult;
+
+            response?.StatusCode.Should().Be(404);
+            response?.Value.Should().Be("No projects found");
+        }
     }
 }
