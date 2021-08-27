@@ -54,7 +54,7 @@ namespace ProjectFinderApi.Tests.V1.Controllers
         }
 
         [Test]
-        public void CreateUserReturns422WhenPostWorkerExceptionThrown()
+        public void CreateUserReturns422WhenPostUserExceptionThrown()
         {
             //arrange
             const string errorMessage = "Failed to create user";

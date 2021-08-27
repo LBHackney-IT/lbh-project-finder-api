@@ -120,7 +120,7 @@ namespace ProjectFinderApi.Tests.V1.Controllers
         }
 
         [Test]
-        public void GetProjectReturns400WhenProjectIsNotFound()
+        public void GetProjectReturns404WhenProjectIsNotFound()
         {
             var projectRequest = TestHelpers.GetProjectRequest();
 
@@ -131,7 +131,7 @@ namespace ProjectFinderApi.Tests.V1.Controllers
         }
 
         [Test]
-        public void UpdateProjectReturns201WhenProjectIsSuccessfullyUpdated()
+        public void UpdateProjectReturns204WhenProjectIsSuccessfullyUpdated()
         {
             var projectRequest = TestHelpers.UpdateProjectRequest();
             _projectsUseCase.Setup(x => x.ExecutePatch(projectRequest));
@@ -166,7 +166,7 @@ namespace ProjectFinderApi.Tests.V1.Controllers
         [Test]
         public void DeleteProjectReturns200WhenProjectIsSucessfullyDeleted()
         {
-            var response = _projectController.DeleteProject(1) as ObjectResult;
+            var response = _projectController.DeleteProject(1) as StatusCodeResult;
 
             response?.StatusCode.Should().Be(200);
         }
