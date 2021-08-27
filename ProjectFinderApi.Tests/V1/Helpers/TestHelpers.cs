@@ -157,6 +157,37 @@ namespace ProjectFinderApi.Tests.V1.Helpers
             .RuleFor(p => p.ProductUsers, f => productUsers)
             .RuleFor(p => p.Dependencies, f => dependencies);
         }
+
+        public static CreateProjectMemberRequest CreateProjectMemberRequest(
+            int? projectId = null,
+            int? userId = null,
+            string? projectRole = null)
+        {
+            var user = CreateUser();
+            var project = CreateProject();
+
+            return new Faker<CreateProjectMemberRequest>()
+            .RuleFor(m => m.ProjectId, f => projectId ?? project.Id)
+            .RuleFor(m => m.UserId, f => userId ?? user.Id)
+            .RuleFor(m => m.ProjectRole, f => projectRole ?? f.Random.String2(100));
+        }
+
+        public static ProjectMember CreateProjectMember(
+            int? id = null,
+            int? projectId = null,
+            int? userId = null,
+            string? projectRole = null
+        )
+        {
+            var user = CreateUser();
+            var project = CreateProject();
+
+            return new Faker<ProjectMember>()
+           .RuleFor(m => m.Id, f => id ?? f.UniqueIndex)
+           .RuleFor(m => m.ProjectId, f => projectId ?? project.Id)
+           .RuleFor(m => m.UserId, f => userId ?? user.Id)
+           .RuleFor(m => m.ProjectRole, f => projectRole ?? f.Random.String2(100));
+        }
     }
 
 }
