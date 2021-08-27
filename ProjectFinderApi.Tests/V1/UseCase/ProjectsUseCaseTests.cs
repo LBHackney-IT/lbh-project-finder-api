@@ -21,6 +21,11 @@ namespace ProjectFinderApi.Tests.V1.UseCase
 
         private IProjectsUseCase _projectsUseCase;
 
+        private readonly Fixture _fixture = new Fixture();
+
+        private const int MinimumLimit = 10;
+        private const int MaximumLimit = 100;
+
         [SetUp]
         public void SetUp()
         {
@@ -135,6 +140,123 @@ namespace ProjectFinderApi.Tests.V1.UseCase
 
         }
 
-    }
+        [Test]
+        public void ExecuteGetAllByQueryReturnsAnEmptyListIfNoResultsFound()
+        {
+            var searchQuery = new ProjectQueryParams { ProjectName = "test" };
+            var emptyResponse = new ProjectListResponse { Projects = new List<ProjectResponse>() };
+            var emptyList = new List<ProjectResponse>();
+            _mockProjectsGateway.Setup(x => x.GetProjectsByQuery(0, 20, searchQuery.ProjectName, null, null)).Returns(emptyList);
 
+            var response = _projectsUseCase.ExecuteGetAllByQuery(searchQuery, 0, 20);
+
+            response.Should().BeEquivalentTo(emptyResponse);
+        }
+
+        [Test]
+        public void ExecuteGetAllByQueryReturnsAListOfProjects()
+        {
+            var searchQuery = new ProjectQueryParams { ProjectName = "test" };
+            var projectList = new List<ProjectResponse> { TestHelpers.CreateProjectResponse(projectName: searchQuery.ProjectName) };
+            _mockProjectsGateway.Setup(x => x.GetProjectsByQuery(0, 20, searchQuery.ProjectName, null, null)).Returns(projectList);
+
+            var response = _projectsUseCase.ExecuteGetAllByQuery(searchQuery, 0, 20);
+
+            response.Should().NotBeNull();
+            response.Projects.Should().BeEquivalentTo(projectList);
+        }
+
+        [Test]
+        public void ExecuteGetAllByQueryCallsGatewayWithLimitAndCursor()
+        {
+            var cursor = 0;
+            var limit = 20;
+            var searchQuery = new ProjectQueryParams { ProjectName = "test" };
+            var projectList = new List<ProjectResponse> { TestHelpers.CreateProjectResponse(projectName: searchQuery.ProjectName) };
+            _mockProjectsGateway.Setup(x => x.GetProjectsByQuery(cursor, limit, searchQuery.ProjectName, null, null)).Returns(projectList);
+
+            _projectsUseCase.ExecuteGetAllByQuery(searchQuery, cursor, limit);
+
+            _mockProjectsGateway.Verify(x => x.GetProjectsByQuery(It.Is<int>(x => x == cursor), It.Is<int>(x => x == limit), It.Is<string>(x => x == searchQuery.ProjectName), It.Is<string>(x => x == null), It.Is<string>(x => x == null)), Times.Once());
+        }
+
+        [Test]
+        public void ExecuteGetAllByQueryReturnsTheNextCursor()
+        {
+            var searchQuery = new ProjectQueryParams();
+            var projects = _fixture.CreateMany<ProjectResponse>(20).OrderBy(x => x.Id).ToList();
+            _mockProjectsGateway.Setup(x => x.GetProjectsByQuery(0, 20, null, null, null)).Returns(projects);
+
+            var expectedNextCursor = projects.Last().Id.ToString();
+
+            var response = _projectsUseCase.ExecuteGetAllByQuery(searchQuery, 0, 20);
+
+            response.NextCursor.Should().Be(expectedNextCursor);
+
+        }
+
+        [Test]
+        public void WhenAtEndOfProjectListTheNextCursorShouldBeNull()
+        {
+            var searchQuery = new ProjectQueryParams();
+            var projects = _fixture.CreateMany<ProjectResponse>(15).OrderBy(x => x.Id).ToList();
+            _mockProjectsGateway.Setup(x => x.GetProjectsByQuery(0, 20, null, null, null)).Returns(projects);
+
+
+            var response = _projectsUseCase.ExecuteGetAllByQuery(searchQuery, 0, 20);
+
+            response.NextCursor.Should().BeNull();
+
+        }
+
+        [Test]
+        public void IfExecuteGetAllByQueryLimitIsLessThanTheMinimumTheLimitWillBeTheMinimum()
+        {
+            var searchQuery = new ProjectQueryParams();
+            var projects = _fixture.CreateMany<ProjectResponse>(10).OrderBy(x => x.Id).ToList();
+            _mockProjectsGateway.Setup(x => x.GetProjectsByQuery(0, MinimumLimit, null, null, null)).Returns(projects);
+
+            _projectsUseCase.ExecuteGetAllByQuery(searchQuery, 0, 5);
+
+            _mockProjectsGateway.Verify(x => x.GetProjectsByQuery(0, MinimumLimit, null, null, null));
+        }
+
+        [Test]
+        public void IfExecuteGetAllByQueryLimitIsOnTheMinimumBoundaryTheLimitWillBeTheMinimum()
+        {
+
+            var searchQuery = new ProjectQueryParams();
+            var projects = _fixture.CreateMany<ProjectResponse>(10).OrderBy(x => x.Id).ToList();
+            _mockProjectsGateway.Setup(x => x.GetProjectsByQuery(0, MinimumLimit, null, null, null)).Returns(projects);
+
+            _projectsUseCase.ExecuteGetAllByQuery(searchQuery, 0, 10);
+
+            _mockProjectsGateway.Verify(x => x.GetProjectsByQuery(0, MinimumLimit, null, null, null));
+        }
+
+        [Test]
+        public void IfExecuteGetAllByQueryLimitIsMoreThanTheMaximumTheLimitWillBeTheMaximum()
+        {
+            var searchQuery = new ProjectQueryParams();
+            var projects = _fixture.CreateMany<ProjectResponse>(10).OrderBy(x => x.Id).ToList();
+            _mockProjectsGateway.Setup(x => x.GetProjectsByQuery(0, MaximumLimit, null, null, null)).Returns(projects);
+
+            _projectsUseCase.ExecuteGetAllByQuery(searchQuery, 0, 200);
+
+            _mockProjectsGateway.Verify(x => x.GetProjectsByQuery(0, MaximumLimit, null, null, null));
+        }
+
+        [Test]
+        public void IfExecuteGetAllByQueryLimitIsOnTheMaximumBoundaryTheLimitWillBeTheMaximum()
+        {
+
+            var searchQuery = new ProjectQueryParams();
+            var projects = _fixture.CreateMany<ProjectResponse>(10).OrderBy(x => x.Id).ToList();
+            _mockProjectsGateway.Setup(x => x.GetProjectsByQuery(0, MaximumLimit, null, null, null)).Returns(projects);
+
+            _projectsUseCase.ExecuteGetAllByQuery(searchQuery, 0, 100);
+
+            _mockProjectsGateway.Verify(x => x.GetProjectsByQuery(0, MaximumLimit, null, null, null));
+        }
+    }
 }

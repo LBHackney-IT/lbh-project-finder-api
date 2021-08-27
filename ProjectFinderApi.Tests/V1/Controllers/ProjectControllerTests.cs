@@ -22,6 +22,8 @@ namespace ProjectFinderApi.Tests.V1.Controllers
 
         private readonly Faker _faker = new Faker();
 
+        private readonly Fixture _fixture = new Fixture();
+
 
         [SetUp]
         public void SetUp()
@@ -181,5 +183,30 @@ namespace ProjectFinderApi.Tests.V1.Controllers
             response?.Value.Should().Be($"Project with ID {nonExisitentProjectId} not found");
         }
 
+        [Test]
+        public void GetProjectBySearchQueryReturns200WhenSuccessful()
+        {
+            var projectResponseList = _fixture.Create<ProjectListResponse>();
+            var projectSearchQuery = new ProjectQueryParams();
+            _projectsUseCase.Setup(x => x.ExecuteGetAllByQuery(projectSearchQuery, 0, 20)).Returns(projectResponseList);
+
+            var response = _projectController.GetProjectsBySearchQuery(projectSearchQuery) as OkObjectResult;
+
+            response?.StatusCode.Should().Be(200);
+            response?.Value.Should().Be(projectResponseList);
+        }
+
+        [Test]
+        public void GetProjectBySearchQueryReturns404WhenNoProjectsFound()
+        {
+
+            var projectSearchQuery = new ProjectQueryParams();
+            _projectsUseCase.Setup(x => x.ExecuteGetAllByQuery(projectSearchQuery, 0, 20)).Throws(new GetProjectsException("No projects found"));
+
+            var response = _projectController.GetProjectsBySearchQuery(projectSearchQuery) as NotFoundObjectResult;
+
+            response?.StatusCode.Should().Be(404);
+            response?.Value.Should().Be("No projects found");
+        }
     }
 }

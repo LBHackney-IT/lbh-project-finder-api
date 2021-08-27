@@ -25,4 +25,10 @@ namespace ProjectFinderApi.V1.Exceptions
         public DeleteProjectException(string message) : base(message) { }
 
     }
+
+    public class GetProjectsException : Exception
+    {
+        public GetProjectsException(string message) : base(message) { }
+
+    }
 }
