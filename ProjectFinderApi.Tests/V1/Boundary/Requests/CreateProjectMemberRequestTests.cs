@@ -18,7 +18,7 @@ namespace ProjectFinderApi.Tests.V1.Boundary.Requests
         public void CreateProjectMemberRequestValidationReturnsErrorsWithInvalidProperties()
         {
 
-            var badCreateProjectRequests = new List<(CreateProjectMemberRequest, string)>
+            var badCreateProjectMemberRequests = new List<(CreateProjectMemberRequest, string)>
             {
                 (TestHelpers.CreateProjectMemberRequest(projectRole: _faker.Random.String2(102)), "Project role must be no longer than 100 characters"),
                 (TestHelpers.CreateProjectMemberRequest(projectRole: ""), "A project role must be provided"),
@@ -26,7 +26,7 @@ namespace ProjectFinderApi.Tests.V1.Boundary.Requests
 
             var validator = new CreateProjectMemberRequestValidator();
 
-            foreach (var (request, expectedErrorMessage) in badCreateProjectRequests)
+            foreach (var (request, expectedErrorMessage) in badCreateProjectMemberRequests)
             {
                 var validationResponse = validator.Validate(request);
 
