@@ -41,12 +41,12 @@ namespace ProjectFinderApi.Tests.V1.Boundary.Requests
         }
 
         [Test]
-        public void ValidCreateProjectRequestReturnsNoErrorsOnValidation()
+        public void ValidCreateProjectMemberRequestReturnsNoErrorsOnValidation()
         {
-            var projectRequest = TestHelpers.CreateProjectMemberRequest();
+            var projectMemberRequest = TestHelpers.CreateProjectMemberRequest();
             var validator = new CreateProjectMemberRequestValidator();
 
-            var validationResponse = validator.Validate(projectRequest);
+            var validationResponse = validator.Validate(projectMemberRequest);
 
             validationResponse.IsValid.Should().Be(true);
         }
