@@ -19,8 +19,6 @@ namespace ProjectFinderApi.Tests.V1.Controllers
 
         private Mock<IProjectMembersUseCase> _projectMembersUseCase;
 
-        private readonly Fixture _fixture = new Fixture();
-
         [SetUp]
         public void SetUp()
         {
