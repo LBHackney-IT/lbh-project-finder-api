@@ -198,12 +198,51 @@ namespace ProjectFinderApi.Tests.V1.Helpers
         )
         {
             return new Faker<ProjectMemberResponse>()
-           .RuleFor(m => m.Id, f => id ?? f.UniqueIndex)
+            .RuleFor(m => m.Id, f => id ?? f.UniqueIndex)
            .RuleFor(m => m.ProjectId, f => projectId ?? f.UniqueIndex)
            .RuleFor(m => m.ProjectName, f => projectName ?? f.Random.String2(500))
            .RuleFor(m => m.MemberName, f => memberName ?? f.Person.FirstName + " " + f.Person.LastName)
            .RuleFor(m => m.ProjectRole, f => projectRole ?? f.Random.String2(100));
         }
+
+        public static CreateProjectLinkRequest CreateProjectLinkRequest(
+            int? projectId = null,
+            string? linkTitle = null,
+            string? link = null
+        )
+        {
+            return new Faker<CreateProjectLinkRequest>()
+            .RuleFor(l => l.ProjectId, f => projectId ?? f.UniqueIndex)
+            .RuleFor(l => l.LinkTitle, f => linkTitle ?? f.Random.String2(100))
+            .RuleFor(l => l.Link, f => link ?? f.Random.String2(1000));
+        }
+
+        public static ProjectLink CreateProjectLink(
+            int? id = null,
+            int? projectId = null,
+            string? linkTitle = null,
+            string? link = null
+        )
+        {
+            return new Faker<ProjectLink>()
+            .RuleFor(l => l.Id, f => id ?? f.UniqueIndex)
+            .RuleFor(l => l.ProjectId, f => projectId ?? f.UniqueIndex)
+            .RuleFor(l => l.LinkTitle, f => linkTitle ?? f.Random.String2(100))
+            .RuleFor(l => l.Link, f => link ?? f.Random.String2(1000));
+        }
+
+        public static ProjectLinkResponse CreateProjectLinkResponse(
+            int? id = null,
+            string? linkTitle = null,
+            string? link = null
+        )
+        {
+            return new Faker<ProjectLinkResponse>()
+            .RuleFor(l => l.Id, f => id ?? f.UniqueIndex)
+            .RuleFor(l => l.LinkTitle, f => linkTitle ?? f.Random.String2(100))
+            .RuleFor(l => l.Link, f => link ?? f.Random.String2(1000));
+        }
+
     }
 
 }
