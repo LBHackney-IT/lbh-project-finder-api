@@ -36,4 +36,10 @@ namespace ProjectFinderApi.V1.Exceptions
         public PostProjectMemberException(string message) : base(message) { }
 
     }
+
+    public class GetProjectMembersException : Exception
+    {
+        public GetProjectMembersException(string message) : base(message) { }
+
+    }
 }

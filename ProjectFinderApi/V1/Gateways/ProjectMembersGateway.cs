@@ -46,5 +46,58 @@ namespace ProjectFinderApi.V1.Gateways
             _databaseContext.SaveChanges();
         }
 
+        public List<ProjectMemberResponse> GetProjectMembersByProjectId(int projectId)
+        {
+
+            var response = _databaseContext.ProjectMembers
+            .Where(x => x.ProjectId == projectId)
+            .Include(x => x.Project)
+            .Include(x => x.User)
+            .Select(x => new ProjectMemberResponse()
+            {
+                Id = x.Id,
+                ProjectId = x.ProjectId,
+                ProjectName = x.Project.ProjectName,
+                MemberName = $"{x.User.FirstName} {x.User.LastName}",
+                ProjectRole = x.ProjectRole,
+            }).ToList();
+
+            return response;
+        }
+
+
+        public List<ProjectMemberResponse> GetProjectMembersByUserId(int userId)
+        {
+
+            var response = _databaseContext.ProjectMembers
+            .Where(x => x.UserId == userId)
+            .Include(x => x.Project)
+            .Include(x => x.User)
+            .Select(x => new ProjectMemberResponse()
+            {
+                Id = x.Id,
+                ProjectId = x.ProjectId,
+                ProjectName = x.Project.ProjectName,
+                MemberName = $"{x.User.FirstName} {x.User.LastName}",
+                ProjectRole = x.ProjectRole,
+            }).ToList();
+
+            return response;
+        }
+
+        public void DeleteProjectMember(int id)
+        {
+            var member = _databaseContext.ProjectMembers
+            .Where(x => x.Id == id)
+            .FirstOrDefault();
+
+            if (member == null)
+            {
+                throw new GetProjectMembersException($"Project member with ID: {id} not found");
+            }
+
+            _databaseContext.ProjectMembers.Remove(member);
+            _databaseContext.SaveChanges();
+        }
     }
 }
