@@ -33,5 +33,22 @@ namespace ProjectFinderApi.Tests.V1.Infrastructure
 
             result.Should().BeEquivalentTo(project);
         }
+
+        [Test]
+        public void CanCreateADatabaseRecordForAProjectMember()
+        {
+            var user = TestHelpers.CreateUser();
+            var project = TestHelpers.CreateProject();
+            var member = TestHelpers.CreateProjectMember(userId: user.Id, projectId: project.Id);
+
+            DatabaseContext.Add(user);
+            DatabaseContext.Add(project);
+            DatabaseContext.Add(member);
+            DatabaseContext.SaveChanges();
+
+            var result = DatabaseContext.ProjectMembers.FirstOrDefault();
+
+            result.Should().BeEquivalentTo(member);
+        }
     }
 }

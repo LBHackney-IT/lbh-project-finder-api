@@ -156,6 +156,7 @@ namespace ProjectFinderApi
         {
             services.AddScoped<IUsersGateway, UsersGateway>();
             services.AddScoped<IProjectsGateway, ProjectsGateway>();
+            services.AddScoped<IProjectMembersGateway, ProjectMembersGateway>();
 
         }
 
@@ -163,6 +164,7 @@ namespace ProjectFinderApi
         {
             services.AddScoped<IUsersUseCase, UsersUseCase>();
             services.AddScoped<IProjectsUseCase, ProjectsUseCase>();
+            services.AddScoped<IProjectMembersUseCase, ProjectMembersUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
