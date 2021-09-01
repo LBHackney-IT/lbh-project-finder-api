@@ -188,6 +188,22 @@ namespace ProjectFinderApi.Tests.V1.Helpers
            .RuleFor(m => m.UserId, f => userId ?? user.Id)
            .RuleFor(m => m.ProjectRole, f => projectRole ?? f.Random.String2(100));
         }
+
+        public static ProjectMemberResponse CreateProjectMemberResponse(
+            int? id = null,
+            int? projectId = null,
+            string? projectName = null,
+            string? memberName = null,
+            string? projectRole = null
+        )
+        {
+            return new Faker<ProjectMemberResponse>()
+           .RuleFor(m => m.Id, f => id ?? f.UniqueIndex)
+           .RuleFor(m => m.ProjectId, f => projectId ?? f.UniqueIndex)
+           .RuleFor(m => m.ProjectName, f => projectName ?? f.Random.String2(500))
+           .RuleFor(m => m.MemberName, f => memberName ?? f.Person.FirstName + " " + f.Person.LastName)
+           .RuleFor(m => m.ProjectRole, f => projectRole ?? f.Random.String2(100));
+        }
     }
 
 }
