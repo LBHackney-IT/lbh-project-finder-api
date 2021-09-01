@@ -12,5 +12,7 @@ namespace ProjectFinderApi.V1.Infrastructure
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Project> Projects { get; set; } = null!;
         public DbSet<ProjectMember> ProjectMembers { get; set; } = null!;
+
+        public DbSet<ProjectLink> ProjectLinks { get; set; } = null!;
     }
 }
