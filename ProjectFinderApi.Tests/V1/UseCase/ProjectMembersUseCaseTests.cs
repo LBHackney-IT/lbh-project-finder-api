@@ -31,6 +31,8 @@ namespace ProjectFinderApi.Tests.V1.UseCase
         public void ExecutePostCallsProjectMembersGateway()
         {
             var request = TestHelpers.CreateProjectMemberRequest();
+            var members = new List<ProjectMemberResponse>();
+            _mockProjectMembersGateway.Setup(x => x.GetProjectMembersByUserId(request.UserId)).Returns(members);
             _mockProjectMembersGateway.Setup(x => x.CreateProjectMember(request));
 
             _projectMembersUseCase.ExecutePost(request);
@@ -90,5 +92,56 @@ namespace ProjectFinderApi.Tests.V1.UseCase
             Assert.IsInstanceOf<List<ProjectMemberResponse>>(response);
             response.Should().BeEmpty();
         }
+
+        [Test]
+        public void ExecuteGetByUserIdCallsProjectMembersGateway()
+        {
+            var request = 1;
+            _mockProjectMembersGateway.Setup(x => x.GetProjectMembersByUserId(request));
+
+            _projectMembersUseCase.ExecuteGetByUserId(request);
+
+            _mockProjectMembersGateway.Verify(x => x.GetProjectMembersByUserId(request));
+            _mockProjectMembersGateway.Verify(x => x.GetProjectMembersByUserId(It.Is<int>(m => m == request)), Times.Once());
+        }
+
+        [Test]
+        public void ExecuteGetByUserIdReturnsAProjectMemberResponseList()
+        {
+            var request = 1;
+            var members = new List<ProjectMemberResponse>() { TestHelpers.CreateProjectMemberResponse() };
+            _mockProjectMembersGateway.Setup(x => x.GetProjectMembersByUserId(request)).Returns(members);
+
+            var response = _projectMembersUseCase.ExecuteGetByUserId(request);
+
+            Assert.IsInstanceOf<List<ProjectMemberResponse>>(response);
+            response.Should().BeEquivalentTo(members);
+        }
+
+        [Test]
+        public void ExecuteGetByUserIdReturnsAEmptyProjectMemberResponseListIfNoMembersFound()
+        {
+            var request = 1;
+            var members = new List<ProjectMemberResponse>();
+            _mockProjectMembersGateway.Setup(x => x.GetProjectMembersByUserId(request)).Returns(members);
+
+            var response = _projectMembersUseCase.ExecuteGetByUserId(request);
+
+            Assert.IsInstanceOf<List<ProjectMemberResponse>>(response);
+            response.Should().BeEmpty();
+        }
+
+        [Test]
+        public void ExecuteDeleteCallsProjectMembersGateway()
+        {
+            var memberId = 1;
+            _mockProjectMembersGateway.Setup(x => x.DeleteProjectMember(memberId));
+
+            _projectMembersUseCase.ExecuteDelete(memberId);
+
+            _mockProjectMembersGateway.Verify(x => x.DeleteProjectMember(memberId));
+            _mockProjectMembersGateway.Verify(x => x.DeleteProjectMember(It.Is<int>(m => m == memberId)), Times.Once());
+        }
+
     }
 }

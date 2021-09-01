@@ -48,6 +48,18 @@ namespace ProjectFinderApi.Tests.V1.Controllers
         }
 
         [Test]
+        public void CreateProjectMemberReturns422WhenPostProjectMemberExceptionIsThrown()
+        {
+            var request = TestHelpers.CreateProjectMemberRequest();
+            _projectMembersUseCase.Setup(x => x.ExecutePost(request)).Throws(new PostProjectMemberException($"The user with the id of {request.UserId} is already assigned to the project"));
+
+            var response = _projectMemberController.CreateProjectMember(request) as ObjectResult;
+
+            response?.StatusCode.Should().Be(422);
+            response?.Value.Should().Be($"The user with the id of {request.UserId} is already assigned to the project");
+        }
+
+        [Test]
         public void GetProjectMembersByProjectIdReturns200WhenMembersFound()
         {
             var request = 1;
@@ -71,6 +83,53 @@ namespace ProjectFinderApi.Tests.V1.Controllers
 
             response.StatusCode.Should().Be(404);
             response.Value.Should().Be("No members found for that project ID");
+        }
+
+        [Test]
+        public void GetProjectMembersByUserIdReturns200WhenMembersFound()
+        {
+            var request = 1;
+            var members = new List<ProjectMemberResponse>() { TestHelpers.CreateProjectMemberResponse() };
+            _projectMembersUseCase.Setup(x => x.ExecuteGetByUserId(request)).Returns(members);
+
+            var response = _projectMemberController.GetProjectMembersByUserId(request) as ObjectResult;
+
+            response?.StatusCode.Should().Be(200);
+            response?.Value.Should().BeEquivalentTo(members);
+        }
+
+        [Test]
+        public void GetProjectMembersByUserIdReturns404WhenMembersNotFound()
+        {
+            var members = new List<ProjectMemberResponse>();
+            var request = 1;
+            _projectMembersUseCase.Setup(x => x.ExecuteGetByUserId(request)).Returns(members);
+
+            var response = _projectMemberController.GetProjectMembersByUserId(request) as NotFoundObjectResult;
+
+            response.StatusCode.Should().Be(404);
+            response.Value.Should().Be("No members found for that user ID");
+        }
+
+        [Test]
+        public void DeleteProjectMemberReturns200WhenProjectMemberIsSucessfullyDeleted()
+        {
+            _projectMembersUseCase.Setup(x => x.ExecuteDelete(1));
+            var response = _projectMemberController.DeleteProjectMember(1) as StatusCodeResult;
+
+            response.StatusCode.Should().Be(200);
+        }
+
+        [Test]
+        public void DeleteProjectMemberReturns422WhenGetProjectMemberExceptionIsThrown()
+        {
+            var nonExisitentId = 1;
+            _projectMembersUseCase.Setup(x => x.ExecuteDelete(nonExisitentId)).Throws(new GetProjectMembersException($"Project member with ID: {nonExisitentId} not found"));
+
+            var response = _projectMemberController.DeleteProjectMember(nonExisitentId) as ObjectResult;
+
+            response?.StatusCode.Should().Be(422);
+            response?.Value.Should().Be($"Project member with ID: {nonExisitentId} not found");
         }
     }
 }

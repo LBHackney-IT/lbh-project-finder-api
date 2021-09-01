@@ -105,5 +105,58 @@ namespace ProjectFinderApi.Tests.V1.Gateways
         {
             _classUnderTest.GetProjectMembersByProjectId(1).Should().BeEmpty();
         }
+
+        [Test]
+        public void GetProjectMembersByUserIdReturnsFoundMembers()
+        {
+            var (user, project) = SaveUserAndProjectToDatabase(DatabaseContext);
+            var userId = user.Id;
+            var member = SaveProjectMemberToDatabase(TestHelpers.CreateProjectMember(userId: user.Id, projectId: project.Id));
+            var responseMember = new ProjectMemberResponse()
+            {
+                Id = member.Id,
+                ProjectId = member.ProjectId,
+                ProjectName = member.Project.ProjectName,
+                MemberName = $"{member.User.FirstName} {member.User.LastName}",
+                ProjectRole = member.ProjectRole
+            };
+
+            var response = _classUnderTest.GetProjectMembersByUserId(userId);
+
+            response.Count.Should().Be(1);
+            response.Should().ContainEquivalentOf(responseMember);
+        }
+
+        [Test]
+        public void GetProjectMembersByUserIdReturnsAnEmptyListIfNoMembersFound()
+        {
+            _classUnderTest.GetProjectMembersByUserId(1).Should().BeEmpty();
+        }
+
+        [Test]
+        public void DeleteProjectMemberDeletesAProject()
+        {
+            var (user, project) = SaveUserAndProjectToDatabase(DatabaseContext);
+            var member = SaveProjectMemberToDatabase(TestHelpers.CreateProjectMember(userId: user.Id, projectId: project.Id));
+
+            _classUnderTest.DeleteProjectMember(member.Id);
+
+            var deletedMember = DatabaseContext.ProjectMembers.FirstOrDefault(x => x.Id == member.Id);
+
+            deletedMember.Should().BeNull();
+        }
+
+        [Test]
+        public void DeleteProjectMemberThrowsGetProjectMemberExceptionIfMemberDoesNotExist()
+        {
+            var (user, project) = SaveUserAndProjectToDatabase(DatabaseContext);
+            var member = SaveProjectMemberToDatabase(TestHelpers.CreateProjectMember(userId: user.Id, projectId: project.Id));
+            var notRealMemberId = 1;
+
+            Action act = () => _classUnderTest.DeleteProjectMember(notRealMemberId);
+
+            act.Should().Throw<GetProjectMembersException>().WithMessage($"Project member with ID: {notRealMemberId} not found");
+        }
+
     }
 }

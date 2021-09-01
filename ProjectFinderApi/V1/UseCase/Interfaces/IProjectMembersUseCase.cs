@@ -9,5 +9,9 @@ namespace ProjectFinderApi.V1.UseCase.Interfaces
         void ExecutePost(CreateProjectMemberRequest request);
 
         List<ProjectMemberResponse> ExecuteGetByProjectId(int projectId);
+
+        List<ProjectMemberResponse> ExecuteGetByUserId(int userId);
+
+        void ExecuteDelete(int id);
     }
 }

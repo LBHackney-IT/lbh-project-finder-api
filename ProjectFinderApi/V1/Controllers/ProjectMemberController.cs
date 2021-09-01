@@ -71,5 +71,46 @@ namespace ProjectFinderApi.V1.Controllers
             return Ok(response);
 
         }
+
+        /// <summary>
+        /// Get a project member by user Id
+        /// </summary>
+        /// <response code="200">project members successfully found</response>
+        /// <response code="400">Invalid GetProjectMembersByUserIdRequest received.</response>
+        /// <response code="404">No project members found for this user Id</response>
+        [ProducesResponseType(typeof(List<ProjectMemberResponse>), StatusCodes.Status200OK)]
+        [HttpGet]
+        [Route("user/{userId:int}/projects")]
+        public IActionResult GetProjectMembersByUserId(int userId)
+        {
+
+            var response = _projectMembersUseCase.ExecuteGetByUserId(userId);
+            if (response.Count == 0)
+            {
+                return NotFound("No members found for that user ID");
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// delete a project member
+        /// </summary>
+        /// <response code="200">project members successfully deleted</response>
+        /// <response code="422">Could not process request</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpDelete]
+        [Route("members/{id:int}")]
+        public IActionResult DeleteProjectMember(int id)
+        {
+            try
+            {
+                _projectMembersUseCase.ExecuteDelete(id);
+                return Ok();
+            }
+            catch (GetProjectMembersException e)
+            {
+                return UnprocessableEntity(e.Message);
+            }
+        }
     }
 }
