@@ -46,5 +46,23 @@ namespace ProjectFinderApi.V1.Gateways
             _databaseContext.SaveChanges();
         }
 
+        public List<ProjectMemberResponse> GetProjectMembersByProjectId(int projectId)
+        {
+
+            var response = _databaseContext.ProjectMembers
+            .Where(x => x.ProjectId == projectId)
+            .Include(x => x.Project)
+            .Include(x => x.User)
+            .Select(x => new ProjectMemberResponse()
+            {
+                Id = x.Id,
+                ProjectId = x.ProjectId,
+                ProjectName = x.Project.ProjectName,
+                MemberName = $"{x.User.FirstName} {x.User.LastName}",
+                ProjectRole = x.ProjectRole,
+            }).ToList();
+
+            return response;
+        }
     }
 }
