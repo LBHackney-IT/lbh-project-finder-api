@@ -50,5 +50,20 @@ namespace ProjectFinderApi.Tests.V1.Infrastructure
 
             result.Should().BeEquivalentTo(member);
         }
+
+        [Test]
+        public void CanCreateADatabaseRecordForAProjectLink()
+        {
+            var project = TestHelpers.CreateProject();
+            var link = TestHelpers.CreateProjectLink(projectId: project.Id);
+
+            DatabaseContext.Add(project);
+            DatabaseContext.Add(link);
+            DatabaseContext.SaveChanges();
+
+            var result = DatabaseContext.ProjectLinks.FirstOrDefault();
+
+            result.Should().BeEquivalentTo(link);
+        }
     }
 }
