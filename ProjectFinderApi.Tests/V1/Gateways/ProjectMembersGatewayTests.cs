@@ -71,5 +71,39 @@ namespace ProjectFinderApi.Tests.V1.Gateways
             return (user, project);
         }
 
+        private ProjectMember SaveProjectMemberToDatabase(ProjectMember projectMember)
+        {
+            DatabaseContext.ProjectMembers.Add(projectMember);
+            DatabaseContext.SaveChanges();
+            return projectMember;
+
+        }
+
+        [Test]
+        public void GetProjectMembersByProjectIdReturnsFoundMembers()
+        {
+            var (user, project) = SaveUserAndProjectToDatabase(DatabaseContext);
+            var projectId = project.Id;
+            var member = SaveProjectMemberToDatabase(TestHelpers.CreateProjectMember(projectId: project.Id, userId: user.Id));
+            var responseMember = new ProjectMemberResponse()
+            {
+                Id = member.Id,
+                ProjectId = member.ProjectId,
+                ProjectName = member.Project.ProjectName,
+                MemberName = $"{member.User.FirstName} {member.User.LastName}",
+                ProjectRole = member.ProjectRole
+            };
+
+            var response = _classUnderTest.GetProjectMembersByProjectId(projectId);
+
+            response.Count.Should().Be(1);
+            response.Should().ContainEquivalentOf(responseMember);
+        }
+
+        [Test]
+        public void GetProjectMembersByProjectIdReturnsAnEmptyListIfNoMembersFound()
+        {
+            _classUnderTest.GetProjectMembersByProjectId(1).Should().BeEmpty();
+        }
     }
 }

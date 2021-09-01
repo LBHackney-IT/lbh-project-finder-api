@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -48,5 +47,30 @@ namespace ProjectFinderApi.Tests.V1.Controllers
             response?.StatusCode.Should().Be(400);
         }
 
+        [Test]
+        public void GetProjectMembersByProjectIdReturns200WhenMembersFound()
+        {
+            var request = 1;
+            var members = new List<ProjectMemberResponse>() { TestHelpers.CreateProjectMemberResponse() };
+            _projectMembersUseCase.Setup(x => x.ExecuteGetByProjectId(request)).Returns(members);
+
+            var response = _projectMemberController.GetProjectMembersByProjectId(request) as ObjectResult;
+
+            response?.StatusCode.Should().Be(200);
+            response?.Value.Should().BeEquivalentTo(members);
+        }
+
+        [Test]
+        public void GetProjectMembersByProjectIdReturns404WhenMembersNotFound()
+        {
+            var members = new List<ProjectMemberResponse>();
+            var request = 1;
+            _projectMembersUseCase.Setup(x => x.ExecuteGetByProjectId(request)).Returns(members);
+
+            var response = _projectMemberController.GetProjectMembersByProjectId(request) as NotFoundObjectResult;
+
+            response.StatusCode.Should().Be(404);
+            response.Value.Should().Be("No members found for that project ID");
+        }
     }
 }
