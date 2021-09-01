@@ -48,5 +48,28 @@ namespace ProjectFinderApi.V1.Controllers
                 return UnprocessableEntity(e.Message);
             }
         }
+
+        /// <summary>
+        /// Get a project member by project Id
+        /// </summary>
+        /// <response code="200">project members successfully found</response>
+        /// <response code="400">Invalid GetProjectMembersByProjectIdRequest received.</response>
+        /// <response code="404">No project members found for this project Id</response>
+        [ProducesResponseType(typeof(List<ProjectMemberResponse>), StatusCodes.Status200OK)]
+        [HttpGet]
+        [Route("projects/{projectId:int}/team")]
+        public IActionResult GetProjectMembersByProjectId(int projectId)
+        {
+
+            var response = _projectMembersUseCase.ExecuteGetByProjectId(projectId);
+            if (response.Count == 0)
+            {
+                return NotFound("No members found for that project ID");
+            }
+
+
+            return Ok(response);
+
+        }
     }
 }
