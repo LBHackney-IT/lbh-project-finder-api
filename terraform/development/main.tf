@@ -31,7 +31,7 @@ data "aws_vpc" "development_vpc" {
 data "aws_subnet_ids" "development" {
   vpc_id = data.aws_vpc.development_vpc.id
   filter {
-    name   = "tag:envrionment"
+    name   = "tag:environment"
     values = ["development"]
   }
 }
