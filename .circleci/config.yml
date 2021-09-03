@@ -174,13 +174,13 @@ workflows:
           filters:
             branches:
               only: development
-    #  - deploy-to-development:
-    #       context: api-assume-role-development-context
-    #       requires:
-    #         - terraform-init-and-apply-to-development
-    #       filters:
-    #         branches:
-    #           only: development
+     - deploy-to-development:
+          context: api-assume-role-development-context
+          requires:
+            - terraform-init-and-apply-to-development
+          filters:
+            branches:
+              only: development
 
   # check-and-deploy-staging-and-production:
   #     jobs:

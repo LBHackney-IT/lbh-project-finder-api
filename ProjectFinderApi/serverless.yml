@@ -19,7 +19,7 @@ provider:
           rateLimit: 100
 
 package:
-  artifact: ./bin/release/netcoreapp3.1/project-finder-api.zip
+  artifact: ./ProjectFinderApi/bin/release/netcoreapp3.1/project-finder-api.zip
 
 functions:
   ProjectFinderApi:
@@ -92,6 +92,8 @@ resources:
 custom:
   vpc:
     development:
+      securityGroupIds:
+        - sg-03ad9ccbfb795224e
       subnetIds:
         - subnet-0deabb5d8fb9c3446
         - subnet-000b89c249f12a8ad
