@@ -161,6 +161,13 @@ workflows:
       - build-and-test:
           requires:
             - check-code-formatting
+      - assume-role-development:
+          context: api-assume-role-development-context
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: development
       - terraform-init-and-apply-to-development:
           requires:
             - assume-role-development
