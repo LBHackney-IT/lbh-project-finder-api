@@ -182,7 +182,7 @@ jobs:
       - deploy-lambda:
           stage: "development"
           aws-account: $AWS_ACCOUNT_DEVELOPMENT
- migrate-database-development:
+  migrate-database-development:
     executor: docker-dotnet
     steps:
       - migrate-database:
@@ -222,14 +222,14 @@ workflows:
               only: development
       - migrate-database-development:
           requires:
-            - assume-role-development
+            - terraform-init-and-apply-to-development
           filters:
             branches:
               only: development
       - deploy-to-development:
           context: api-assume-role-development-context
           requires:
-            - terraform-init-and-apply-to-development
+            - migrate-database-development
           filters:
             branches:
               only: development
