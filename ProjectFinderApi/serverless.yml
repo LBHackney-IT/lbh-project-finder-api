@@ -27,7 +27,7 @@ functions:
     handler: ProjectFinderApi::ProjectFinderApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
-      CONNECTION_STRING: Host=${ssm:/project-finder-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/project-finder-api/${self:provider.stage}/postgres-port};Database=project-finder-api-mirror;Username=${ssm:/project-finder-api/${self:provider.stage}/postgres-username};Password=${ssm:/project-finder-api/${self:provider.stage}/postgres-password}
+      CONNECTION_STRING: Host=${ssm:/project-finder-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/project-finder-api/${self:provider.stage}/postgres-port};Database=${ssm:/project-finder-api/${self:provider.stage}/postgres-database};Username=${ssm:/project-finder-api/${self:provider.stage}/postgres-username};Password=${ssm:/project-finder-api/${self:provider.stage}/postgres-password}
     events:
       - http:
           path: /{proxy+}
