@@ -264,12 +264,12 @@ workflows:
       #     filters:
       #       branches:
       #         only: master
-      - deploy-to-staging:
-          requires:
-            - terraform-init-and-apply-to-staging
-          filters:
-            branches:
-              only: master
+      # - deploy-to-staging:
+      #     requires:
+      #       - terraform-init-and-apply-to-staging
+      #     filters:
+      #       branches:
+      #         only: master
 #       - permit-production-terraform-release:
 #           type: approval
 #           requires:
