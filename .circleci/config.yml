@@ -266,7 +266,7 @@ workflows:
       #         only: master
       - deploy-to-staging:
           requires:
-            - migrate-database-staging
+            - terraform-init-and-apply-to-staging
           filters:
             branches:
               only: master
