@@ -187,6 +187,11 @@ jobs:
     steps:
       - migrate-database:
           stage: "development"
+  migrate-database-staging:
+    executor: docker-dotnet
+    steps:
+      - migrate-database:
+          stage: "staging"
   deploy-to-staging:
     executor: docker-dotnet
     steps:
@@ -234,31 +239,37 @@ workflows:
             branches:
               only: development
 
-  # check-and-deploy-staging-and-production:
-  #     jobs:
-  #     - build-and-test:
-  #         filters:
-  #           branches:
-  #             only: master
-  #     - assume-role-staging:
-  #         context: api-assume-role-staging-context
-  #         requires:
-  #             - build-and-test
-  #         filters:
-  #            branches:
-  #              only: master
-      # - terraform-init-and-apply-to-staging:
-      #     requires:
-      #       - assume-role-staging
-      #     filters:
-      #       branches:
-      #         only: master
-      # - deploy-to-staging:
-      #     requires:
-      #       - terraform-init-and-apply-to-staging
-      #     filters:
-      #       branches:
-      #         only: master
+  check-and-deploy-staging:
+      jobs:
+      - build-and-test:
+          filters:
+            branches:
+              only: master
+      - assume-role-staging:
+          context: api-assume-role-staging-context
+          requires:
+              - build-and-test
+          filters:
+             branches:
+               only: master
+      - terraform-init-and-apply-to-staging:
+          requires:
+            - assume-role-staging
+          filters:
+            branches:
+              only: master
+      - migrate-database-staging:
+          requires:
+            - terraform-init-and-apply-to-staging
+          filters:
+            branches:
+              only: staging
+      - deploy-to-staging:
+          requires:
+            - migrate-database-staging
+          filters:
+            branches:
+              only: master
 #       - permit-production-terraform-release:
 #           type: approval
 #           requires:
