@@ -121,8 +121,9 @@ jobs:
           aws-account: $AWS_ACCOUNT_STAGING
 
 workflows:
-  deploy-development:
-    jobs:
+
+  deploy-or-remove-development-and-staging:
+      jobs:
       - assume-role-development:
           context: api-assume-role-development-context
           filters:
@@ -155,11 +156,11 @@ workflows:
           filters:
             branches:
               only: development
-
-  check-and-deploy-staging:
-      jobs:
       - assume-role-staging:
           context: api-assume-role-staging-context
+          requires:
+            - deploy-to-development
+            - terraform-init-and-apply-to-development
           filters:
              branches:
                only: master
