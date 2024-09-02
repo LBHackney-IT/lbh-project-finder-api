@@ -1,8 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@3.0.0
-  aws-cli: circleci/aws-cli@0.1.9
+  aws-cli: circleci/aws-cli@5.1.0
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
@@ -87,70 +86,8 @@ commands:
           command: |
             cd ./ProjectFinderApi/
             sls deploy --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
-  migrate-database:
-    description: "Migrate database"
-    parameters:
-      stage:
-        type: string
-    steps:
-      - *attach_workspace
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Install Unzip
-          command: apt-get update && apt-get install unzip
-      - run:
-          name: Install AWS CLI
-          command: |
-            curl -L -o awscliv2.zip "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-            unzip awscliv2.zip
-            ./aws/install
-      - run:
-          name: Install Session Manager plugin
-          command: |
-            curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
-            dpkg -i session-manager-plugin.deb
-      - run:
-          name: Install dotnet ef core
-          command: dotnet tool install dotnet-ef --tool-path ./dotnet-ef-local/
-      - run:
-          name: SSH into RDS and migrate database
-          command: |
-            aws ssm get-parameter --name "/platform-apis-jump-box-pem-key" --output text --query Parameter.Value > ./private-key.pem
-            chmod 400 ./private-key.pem
-            HOST=$(aws ssm get-parameter --name /project-finder-api/<<parameters.stage>>/postgres-hostname --query Parameter.Value)
-            PORT=$(aws ssm get-parameter --name /project-finder-api/<<parameters.stage>>/postgres-port --query Parameter.Value)
-            INSTANCE_NAME=$(aws ssm get-parameter --name /platform-apis-jump-box-instance-name --query Parameter.Value)
-            ssh -4 -i ./private-key.pem -Nf -M -L 5602:${HOST//\"}:${PORT//\"} -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o ProxyCommand="aws ssm start-session --target %h --document AWS-StartSSHSession --parameters portNumber=%p --region=eu-west-2" ec2-user@${INSTANCE_NAME//\"}
-            PASSWORD=$(aws ssm get-parameter --name /project-finder-api/<<parameters.stage>>/postgres-password --query Parameter.Value)
-            USERNAME=$(aws ssm get-parameter --name /project-finder-api/<<parameters.stage>>/postgres-username --query Parameter.Value)
-            DATABASE=$(aws ssm get-parameter --name /project-finder-api/<<parameters.stage>>/postgres-database --query Parameter.Value)
-            CONN_STR="Host=localhost;Password=${PASSWORD};Port=5602;Username=${USERNAME};Database=${DATABASE}"
-            cd ./ProjectFinderApi/
-            CONNECTION_STRING=${CONN_STR} ./../dotnet-ef-local/dotnet-ef database update
 
 jobs:
-  check-code-formatting:
-    executor: docker-dotnet
-    steps:
-      - checkout
-      - run:
-          name: Install dotnet format
-          command: dotnet tool install dotnet-format --tool-path ./dotnet-format-local/
-      - run:
-          name: Run formatter check
-          command: ./dotnet-format-local/dotnet-format --check
-  build-and-test:
-    executor: docker-python
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: build
-          command: docker-compose build project-finder-api-test
-      - run:
-          name: Run tests
-          command: docker-compose run project-finder-api-test
   assume-role-development:
     executor: docker-python
     steps:
@@ -161,11 +98,6 @@ jobs:
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
-  assume-role-production:
-    executor: docker-python
-    steps:
-      - assume-role-and-persist-workspace:
-          aws-account: $AWS_ACCOUNT_PRODUCTION
   terraform-init-and-apply-to-development:
     executor: docker-terraform
     steps:
@@ -182,123 +114,79 @@ jobs:
       - deploy-lambda:
           stage: "development"
           aws-account: $AWS_ACCOUNT_DEVELOPMENT
-  migrate-database-development:
-    executor: docker-dotnet
-    steps:
-      - migrate-database:
-          stage: "development"
-  migrate-database-staging:
-    executor: docker-dotnet
-    steps:
-      - migrate-database:
-          stage: "staging"
   deploy-to-staging:
     executor: docker-dotnet
     steps:
       - deploy-lambda:
           stage: "staging"
           aws-account: $AWS_ACCOUNT_STAGING
-  deploy-to-production:
-    executor: docker-dotnet
-    steps:
-      - deploy-lambda:
-          stage: "production"
-          aws-account: $AWS_ACCOUNT_PRODUCTION
 
 workflows:
-  check-and-deploy-development:
+  deploy-development:
     jobs:
-      - check-code-formatting
-      - build-and-test:
-          requires:
-            - check-code-formatting
       - assume-role-development:
           context: api-assume-role-development-context
-          requires:
-            - build-and-test
           filters:
             branches:
               only: development
-      - terraform-init-and-apply-to-development:
+      - permit-development-terraform-release:
+          type: approval
           requires:
             - assume-role-development
           filters:
             branches:
               only: development
-      - migrate-database-development:
+      - terraform-init-and-apply-to-development:
           requires:
-            - terraform-init-and-apply-to-development
+            - permit-development-terraform-release
+          filters:
+            branches:
+              only: development
+      - permit-development-serverless-release:
+          type: approval
+          requires:
+            - assume-role-development
           filters:
             branches:
               only: development
       - deploy-to-development:
           context: api-assume-role-development-context
           requires:
-            - migrate-database-development
+            - permit-development-serverless-release
           filters:
             branches:
               only: development
 
   check-and-deploy-staging:
       jobs:
-      - build-and-test:
-          filters:
-            branches:
-              only: master
       - assume-role-staging:
           context: api-assume-role-staging-context
-          requires:
-              - build-and-test
           filters:
              branches:
                only: master
-      - terraform-init-and-apply-to-staging:
+      - permit-staging-terraform-release:
+          type: approval
           requires:
             - assume-role-staging
           filters:
             branches:
               only: master
-      - migrate-database-staging:
+      - terraform-init-and-apply-to-staging:
           requires:
-            - terraform-init-and-apply-to-staging
+            - permit-staging-terraform-release
+          filters:
+            branches:
+              only: master
+      - permit-staging-serverless-release:
+          type: approval
+          requires:
+            - assume-role-staging
           filters:
             branches:
               only: master
       - deploy-to-staging:
           requires:
-            - migrate-database-staging
+            - permit-staging-serverless-release
           filters:
             branches:
               only: master
-#       - permit-production-terraform-release:
-#           type: approval
-#           requires:
-#             - deploy-to-staging
-#       - assume-role-production:
-#           context: api-assume-role-production-context
-#           requires:
-#               - permit-production-terraform-release
-#           filters:
-#              branches:
-#                only: master
-#       - terraform-init-and-apply-to-production:
-#           requires:
-#             - assume-role-production
-#           filters:
-#             branches:
-#               only: master
-#       - permit-production-release:
-#           type: approval
-#           requires:
-#             - deploy-to-staging
-#           filters:
-#             branches:
-#               only: master
-#       - deploy-to-production:
-#           context: api-assume-role-housing-production-context
-#           requires:
-#             - permit-production-release
-#             - terraform-init-and-apply-to-production
-#           filters:
-#             branches:
-#               only: master
