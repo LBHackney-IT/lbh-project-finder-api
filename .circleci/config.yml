@@ -96,9 +96,9 @@ commands:
             cd ./ProjectFinderApi/
             if [ "<<parameters.stage>>" = "development" ]
             then
-              sls remove --stage <<parameters.stage>> --account <<parameters.aws-account>> --verbose
+              sls remove --stage <<parameters.stage>> --verbose
             else
-              sls deploy --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
+              sls deploy --stage <<parameters.stage>> --conceal
             fi
 
 jobs:
