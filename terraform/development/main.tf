@@ -11,8 +11,6 @@ provider "aws" {
   region  = "eu-west-2"
   version = "~> 2.0"
 }
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
 
 terraform {
   backend "s3" {
@@ -22,24 +20,3 @@ terraform {
     key     = "services/project-finder-api/state"
   }
 }
-
-data "aws_vpc" "development_vpc" {
-  tags = {
-    Name = "vpc-development-apis-development"
-  }
-}
-data "aws_subnet_ids" "development" {
-  vpc_id = data.aws_vpc.development_vpc.id
-  filter {
-    name   = "tag:environment"
-    values = ["development"]
-  }
-}
-
-data "aws_ssm_parameter" "project_finder_postgres_db_password" {
-   name = "/project-finder-api/development/postgres-password"
- }
-
- data "aws_ssm_parameter" "project_finder_postgres_username" {
-   name = "/project-finder-api/development/postgres-username"
- }
