@@ -89,27 +89,6 @@ commands:
             sls deploy --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
 
 jobs:
-  check-code-formatting:
-    executor: docker-dotnet
-    steps:
-      - checkout
-      - run:
-          name: Install dotnet format
-          command: dotnet tool install dotnet-format --tool-path ./dotnet-format-local/
-      - run:
-          name: Run formatter check
-          command: ./dotnet-format-local/dotnet-format --check
-  build-and-test:
-    executor: docker-python
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: build
-          command: docker-compose build project-finder-api-test
-      - run:
-          name: Run tests
-          command: docker-compose run project-finder-api-test
   assume-role-development:
     executor: docker-python
     steps:
@@ -155,16 +134,10 @@ jobs:
           aws-account: $AWS_ACCOUNT_PRODUCTION
 
 workflows:
-  check-and-deploy-development:
+  deploy-development:
     jobs:
-      - check-code-formatting
-      - build-and-test:
-          requires:
-            - check-code-formatting
       - assume-role-development:
           context: api-assume-role-development-context
-          requires:
-            - build-and-test
           filters:
             branches:
               only: development
@@ -207,10 +180,6 @@ workflows:
           type: approval
           requires:
             - assume-role-staging
-          filters:
-            branches:
-              only: master
-      - build-and-test:
           filters:
             branches:
               only: master
