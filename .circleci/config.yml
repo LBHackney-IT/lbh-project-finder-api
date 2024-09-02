@@ -56,7 +56,7 @@ commands:
           command: |
             cd ./terraform/<<parameters.environment>>/
             terraform apply -auto-approve
-  deploy-lambda:
+  deploy-or-remove-lambda:
     description: "Deploys API via Serverless"
     parameters:
       stage:
@@ -70,22 +70,21 @@ commands:
       - run:
           name: Install Node.js
           command: |
-            curl -sL https://deb.nodesource.com/setup_13.x | bash -
+            curl -sL https://deb.nodesource.com/setup_18.x | bash -
             apt-get update && apt-get install -y nodejs
       - run:
           name: Install serverless CLI
-          command: npm i -g serverless
+          command: npm i -g serverless@^3
       - run:
-          name: Build lambda
+          name: Deploy or remove lambda
           command: |
             cd ./ProjectFinderApi/
-            chmod +x ./build.sh
-            ./build.sh
-      - run:
-          name: Deploy lambda
-          command: |
-            cd ./ProjectFinderApi/
-            sls deploy --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
+            if [ "<<parameters.stage>>" = "environment" ]
+            then
+              sls remove --stage <<parameters.stage>> --account <<parameters.aws-account>> --verbose
+            else
+              sls deploy --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
+            fi
 
 jobs:
   assume-role-development:
@@ -111,13 +110,13 @@ jobs:
   deploy-to-development:
     executor: docker-dotnet
     steps:
-      - deploy-lambda:
+      - deploy-or-remove-lambda:
           stage: "development"
           aws-account: $AWS_ACCOUNT_DEVELOPMENT
   deploy-to-staging:
     executor: docker-dotnet
     steps:
-      - deploy-lambda:
+      - deploy-or-remove-lambda:
           stage: "staging"
           aws-account: $AWS_ACCOUNT_STAGING
 
