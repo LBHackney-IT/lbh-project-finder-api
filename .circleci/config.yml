@@ -94,7 +94,7 @@ commands:
           name: Deploy or remove lambda
           command: |
             cd ./ProjectFinderApi/
-            if [ "<<parameters.stage>>" = "environment" ]
+            if [ "<<parameters.stage>>" = "development" ]
             then
               sls remove --stage <<parameters.stage>> --account <<parameters.aws-account>> --verbose
             else
