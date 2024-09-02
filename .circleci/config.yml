@@ -57,7 +57,7 @@ commands:
             cd ./terraform/<<parameters.environment>>/
             terraform apply -auto-approve
   deploy-or-remove-lambda:
-    description: "Deploys API via Serverless"
+    description: "Deploys or Removes API via Serverless"
     parameters:
       stage:
         type: string
@@ -121,7 +121,6 @@ jobs:
           aws-account: $AWS_ACCOUNT_STAGING
 
 workflows:
-
   deploy-or-remove-development-and-staging:
       jobs:
       - assume-role-development:
