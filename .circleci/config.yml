@@ -56,6 +56,21 @@ commands:
           command: |
             cd ./terraform/<<parameters.environment>>/
             terraform apply -auto-approve
+  terraform-preview:
+    description: "Previews terraform configuration"
+    parameters:
+      environment:
+        type: string
+    steps:
+      - *attach_workspace
+      - checkout
+      - run:
+          command: |
+            cd ./terraform/<<parameters.environment>>/
+            terraform get -update=true
+            terraform init
+            terraform plan
+          name: terraform preview
   deploy-or-remove-lambda:
     description: "Deploys or Removes API via Serverless"
     parameters:
@@ -106,6 +121,16 @@ jobs:
     executor: docker-terraform
     steps:
       - terraform-init-then-apply:
+          environment: "staging"
+  terraform-preview-development:
+    executor: docker-terraform
+    steps:
+      - terraform-preview:
+          environment: "development"
+  terraform-preview-staging:
+    executor: docker-terraform
+    steps:
+      - terraform-preview:
           environment: "staging"
   deploy-to-development:
     executor: docker-dotnet
