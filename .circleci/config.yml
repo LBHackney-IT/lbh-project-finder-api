@@ -146,6 +146,18 @@ jobs:
           aws-account: $AWS_ACCOUNT_STAGING
 
 workflows:
+  feature-preview-tf:
+    jobs:
+      - assume-role-development:
+          context: api-assume-role-development-context
+          filters:
+            branches:
+              ignore: master
+      - assume-role-staging:
+          context: api-assume-role-staging-context
+          filters:
+             branches:
+               ignore: master
   deploy-or-remove-development-and-staging:
     jobs:
       - assume-role-development:
