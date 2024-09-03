@@ -94,7 +94,7 @@ commands:
           name: Deploy or remove lambda
           command: |
             cd ./ProjectFinderApi/
-            if [ "<<parameters.stage>>" = "development" ]
+            if [ "<<parameters.stage>>" = "environement" ]
             then
               sls remove --stage <<parameters.stage>> --verbose
             else
@@ -102,42 +102,21 @@ commands:
             fi
 
 jobs:
-  assume-role-development:
-    executor: docker-python
-    steps:
-      - assume-role-and-persist-workspace:
-          aws-account: $AWS_ACCOUNT_DEVELOPMENT
   assume-role-staging:
     executor: docker-python
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
-  terraform-init-and-apply-to-development:
-    executor: docker-terraform
-    steps:
-      - terraform-init-then-apply:
-          environment: "development"
   terraform-init-and-apply-to-staging:
     executor: docker-terraform
     steps:
       - terraform-init-then-apply:
           environment: "staging"
-  terraform-preview-development:
-    executor: docker-terraform
-    steps:
-      - terraform-preview:
-          environment: "development"
   terraform-preview-staging:
     executor: docker-terraform
     steps:
       - terraform-preview:
           environment: "staging"
-  deploy-to-development:
-    executor: docker-dotnet
-    steps:
-      - deploy-or-remove-lambda:
-          stage: "development"
-          aws-account: $AWS_ACCOUNT_DEVELOPMENT
   deploy-to-staging:
     executor: docker-dotnet
     steps:
@@ -159,11 +138,10 @@ workflows:
           filters:
             branches:
               ignore: master
-  deploy-or-remove-development-and-staging:
+  deploy-or-remove-staging:
     jobs:
       - assume-role-staging:
           context: api-assume-role-staging-context
-
           filters:
              branches:
                only: master
