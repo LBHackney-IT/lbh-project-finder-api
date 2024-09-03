@@ -11,8 +11,6 @@ provider "aws" {
   region  = "eu-west-2"
   version = "~> 2.0"
 }
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
 
 terraform {
   backend "s3" {
@@ -22,24 +20,3 @@ terraform {
     key     = "services/project-finder-api/state"
   }
 }
-
-data "aws_vpc" "staging_vpc" {
-  tags = {
-    Name = "vpc-staging-apis-staging"
-  }
-}
-data "aws_subnet_ids" "staging" {
-  vpc_id = data.aws_vpc.staging_vpc.id
-  filter {
-    name   = "tag:Type"
-    values = ["private"]
-  }
-}
-
-data "aws_ssm_parameter" "project_finder_postgres_db_password" {
-   name = "/project-finder-api/staging/postgres-password"
- }
-
- data "aws_ssm_parameter" "project_finder_postgres_username" {
-   name = "/project-finder-api/staging/postgres-username"
- }
