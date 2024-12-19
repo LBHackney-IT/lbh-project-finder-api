@@ -40,7 +40,7 @@ namespace ProjectFinderApi.Tests.V1.Controllers
         public void GetCorrelationShouldReturnCorrelationIdWhenExists()
         {
             // Arrange
-            _stubHttpContext.Request.Headers.Add(Constants.CorrelationId, "123");
+            _stubHttpContext.Request.Headers.Append(Constants.CorrelationId, "123");
 
             // Act
             var result = _sut.GetCorrelationId();
