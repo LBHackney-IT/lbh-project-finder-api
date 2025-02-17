@@ -98,7 +98,7 @@ commands:
             then
               sls remove --stage <<parameters.stage>> --verbose
             else
-              sls deploy --stage <<parameters.stage>> --conceal
+              sls remove --stage <<parameters.stage>> --verbose
             fi
 
 jobs:
